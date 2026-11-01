@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETHIO TAX LINK - Documents</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fa;
+      margin: 0;
+      padding: 20px;
+      color: #263238;
+    }
+    header {
+      background: #075b45;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin-top: 18px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #00000012;
+    }
+    .receipt {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .qr {
+      display: block;
+      width: 160px;
+      height: 160px;
+      margin: 15px auto;
+    }
+    .notice {
+      color: #9a5900;
+      font-size: 13px;
+    }
+    a { color: #075b45; }
+    button {
+      background: #075b45;
+      color: white;
+      border: 0;
+      padding: 11px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    .status { color: #087b43; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ETHIO TAX LINK</h1>
+  <h2>የሰነዶች እና ደረሰኞች ገጽ</h2>
+  <p>Documents & Digital Receipts</p>
+</header>
+
+<div class="card">
+  <h2>የእኔ ሰነዶች</h2>
+  <p>የግብር ማስረጃዎች፦ 0</p>
+  <p>የክፍያ ደረሰኞች፦ 0</p>
+  <p>የግብር ሪፖርቶች፦ 0</p>
+  <p class="notice">
+    ይህ የሙከራ ገጽ ነው። እውነተኛ የግብር ሰነዶች አልተገናኙም።
+  </p>
+</div>
+
+<div class="card">
+  <h2>የምሳሌ የክፍያ ደረሰኝ</h2>
+
+  <div class="receipt">
+    <h3 style="text-align:center">ETHIO TAX LINK</h3>
+    <h3 style="text-align:center">የክፍያ ደረሰኝ</h3>
+
+    <p>የደረሰኝ ቁጥር፦ ETL-DEMO-0001</p>
+    <p>የክፍያ መጠን፦ 2,500 ETB</p>
+    <p>የክፍያ ቀን፦ Demo Date</p>
+    <p>የክፍያ ሁኔታ፦
+      <span class="status">Demo Only</span>
+    </p>
+
+    <img
+      class="qr"
+      alt="Demo QR Code"
+      src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=ETL-DEMO-0001">
+
+    <p style="text-align:center">
+      የምሳሌ QR Code
+    </p>
+
+    <button onclick="verifyReceipt()">
+      ደረሰኙን አረጋግጥ
+    </button>
+    <p id="result"></p>
+  </div>
+
+  <p class="notice">
+    ማስጠንቀቂያ፦ ይህ የሙከራ ደረሰኝ ነው።
+    እውነተኛ ክፍያ አልተፈጸመም።
+    QR Code የምሳሌ መለያን ብቻ ይይዛል።
+  </p>
+</div>
+
+<div class="card">
+  <h2>የማረጋገጫ መረጃ</h2>
+  <p>የሕዝብ ማረጋገጫ፦ QR Code በመቃኘት።</p>
+  <p>የባለሥልጣን ማረጋገጫ፦ በተፈቀደ መለያ በመግባት።</p>
+</div>
+
+<div class="card">
+  <a href="dashboard.html">← ወደ Dashboard ተመለስ</a>
+  <br><br>
+  <a href="index.html">ወደ መነሻ ገጽ</a>
+</div>
+
+<script>
+function verifyReceipt() {
+  document.getElementById("result").innerHTML =
+    "ይህ ETL-DEMO-0001 የሙከራ ደረሰኝ ነው። እውነተኛ ክፍያ አልተረጋገጠም።";
+}
+</script>
+
+</body>
+</html>
