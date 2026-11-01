@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETHIO TAX LINK - Registration</title>
+<style>
+body{margin:0;font-family:Arial;background:#f1f5f3;color:#20342e}
+header{background:#123b32;color:white;padding:22px}
+main{max-width:650px;margin:25px auto;padding:18px}
+form,.intro{background:white;padding:20px;border-radius:12px;margin-bottom:15px}
+label{display:block;margin-top:15px;font-weight:bold}
+input,select{width:100%;padding:12px;margin-top:7px;border:1px solid #ccd8d1;border-radius:7px;font-size:16px}
+button{background:#17634e;color:white;border:0;padding:14px;border-radius:8px;margin-top:20px;width:100%;font-size:16px}
+.note{background:#fff4d7;padding:14px;border-radius:8px;line-height:1.6}
+a{color:white}
+</style>
+</head>
+<body>
+<header>
+<h2>ETHIO TAX LINK</h2>
+<p>የግብር ከፋይ ምዝገባ</p>
+<a href="index.html">ወደ ዋናው ገጽ ተመለስ</a>
+</header>
+<main>
+<div class="intro">
+<h2>የግብር ከፋይ መመዝገቢያ</h2>
+<p>እባክዎ የሚከተለውን መረጃ ይሙሉ።</p>
+</div>
+
+<form id="taxForm">
+<label>የግብር ከፋይ ዓይነት</label>
+<select id="type" required>
+<option value="">ይምረጡ</option>
+<option>ግለሰብ ነጋዴ</option>
+<option>ኩባንያ</option>
+<option>የትራንስፖርት አገልግሎት</option>
+<option>ሌላ የንግድ ዓይነት</option>
+</select>
+
+<label>ሙሉ ስም / የድርጅት ስም</label>
+<input type="text" required placeholder="ስም ያስገቡ">
+
+<label>TIN ቁጥር</label>
+<input type="text" placeholder="የሙከራ TIN">
+
+<label>የንግድ ፈቃድ ቁጥር</label>
+<input type="text" placeholder="የፈቃድ ቁጥር">
+
+<label>የስልክ ቁጥር</label>
+<input type="tel" placeholder="09XXXXXXXX">
+
+<label>ክልል / ከተማ</label>
+<select required>
+<option value="">ይምረጡ</option>
+<option>አዲስ አበባ</option>
+<option>ኦሮሚያ</option>
+<option>አማራ</option>
+<option>ትግራይ</option>
+<option>ደቡብ ኢትዮጵያ</option>
+<option>ሲዳማ</option>
+<option>ሶማሌ</option>
+<option>አፋር</option>
+<option>ቤኒሻንጉል-ጉሙዝ</option>
+<option>ጋምቤላ</option>
+<option>ሐረሪ</option>
+<option>ድሬዳዋ</option>
+<option>ሌላ</option>
+</select>
+
+<label>የአድራሻ ዝርዝር</label>
+<input type="text" placeholder="ዞን፣ ወረዳ፣ ቀበሌ">
+
+<button type="submit">የሙከራ ምዝገባ አስገባ</button>
+</form>
+
+<div class="note">
+<strong>ማስጠንቀቂያ፦</strong>
+ይህ የሙከራ ቅጽ ነው።
+መረጃው ወደ መንግሥት ሥርዓት አይላክም፤
+TIN፣ Fayda ወይም እውነተኛ የግል መረጃ አታስገቡ።
+</div>
+</main>
+
+<script>
+document.getElementById("taxForm").addEventListener("submit",function(e){
+e.preventDefault();
+alert("የሙከራ ቅጹ በትክክል ተሞልቷል። እውነተኛ ምዝገባ አልተፈጸመም።");
+});
+</script>
+</body>
+</html>
