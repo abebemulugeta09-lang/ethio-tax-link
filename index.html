@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETHIO TAX LINK</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6f5;
+      color: #20342e;
+    }
+    header {
+      background: #123b32;
+      color: white;
+      padding: 25px 18px;
+    }
+    header h1 { margin: 0; font-size: 25px; }
+    header p { margin-bottom: 0; }
+    .language {
+      padding: 15px;
+      text-align: right;
+      background: white;
+    }
+    select {
+      padding: 10px;
+      border-radius: 7px;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    .welcome {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 15px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e1e9e5;
+    }
+    .card h3 { color: #17634e; }
+    .card p { line-height: 1.6; }
+    .notice {
+      background: #fff5d9;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #65736d;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ETHIO TAX LINK</h1>
+  <p>National Digital Tax Services Platform</p>
+</header>
+
+<div class="language">
+  <select id="language" onchange="changeLanguage()">
+    <option value="am">አማርኛ</option>
+    <option value="en">English</option>
+    <option value="om">Afaan Oromo</option>
+  </select>
+</div>
+
+<main>
+  <section class="welcome">
+    <h2 id="welcome">እንኳን ወደ ETHIO TAX LINK በደህና መጡ</h2>
+    <p id="intro">
+      የግብር አገልግሎቶችን በዲጂታል መንገድ ለማቅረብ የተዘጋጀ መድረክ።
+    </p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3 id="profile">የግብር ከፋይ መረጃ</h3>
+      <p id="profileText">የግብር ከፋይ መረጃን ለመመዝገብና ለማየት።</p>
+    </div>
+
+    <div class="card">
+      <h3 id="estimate">የግብር ግምት</h3>
+      <p id="estimateText">የግብር መጠንን በሙከራ ለማየት።</p>
+    </div>
+
+    <div class="card">
+      <h3 id="payment">ክፍያዎች</h3>
+      <p id="paymentText">የግብር ክፍያና ደረሰኝ መረጃ።</p>
+    </div>
+
+    <div class="card">
+      <h3 id="documents">ሰነዶች</h3>
+      <p id="documentsText">የግብር ሰነዶችንና መዝገቦችን ለማየት።</p>
+    </div>
+  </section>
+
+  <div class="notice" id="notice">
+    ማስታወሻ፦ ይህ የሙከራ ድረገጽ ነው።
+    ከመንግሥት፣ Fayda፣ ባንኮች ወይም Telebirr
+    ጋር ገና አልተገናኘም። የግብር ግምቱም
+    ሕጋዊ ስሌት አይደለም።
+  </div>
+</main>
+
+<footer>
+  ETHIO TAX LINK © 2026
+</footer>
+
+<script>
+function changeLanguage() {
+  const lang = document.getElementById("language").value;
+
+  const translations = {
+    am: [
+      "እንኳን ወደ ETHIO TAX LINK በደህና መጡ",
+      "የግብር አገልግሎቶችን በዲጂታል መንገድ ለማቅረብ የተዘጋጀ መድረክ።",
+      "የግብር ከፋይ መረጃ",
+      "የግብር ከፋይ መረጃን ለመመዝገብና ለማየት።",
+      "የግብር ግምት",
+      "የግብር መጠንን በሙከራ ለማየት።",
+      "ክፍያዎች",
+      "የግብር ክፍያና ደረሰኝ መረጃ።",
+      "ሰነዶች",
+      "የግብር ሰነዶችንና መዝገቦችን ለማየት።",
+      "ማስታወሻ፦ ይህ የሙከራ ድረገጽ ነው። ከመንግሥት፣ Fayda፣ ባንኮች ወይም Telebirr ጋር ገና አልተገናኘም። የግብር ግምቱም ሕጋዊ ስሌት አይደለም።"
+    ],
+    en: [
+      "Welcome to ETHIO TAX LINK",
+      "A digital platform for tax services.",
+      "Taxpayer Profile",
+      "Register and view taxpayer information.",
+      "Tax Estimate",
+      "View an illustrative tax estimate.",
+      "Payments",
+      "Tax payment and receipt information.",
+      "Documents",
+      "View tax documents and records.",
+      "Notice: This is a demo website. It is not connected to government systems, Fayda, banks or Telebirr. Estimates are not legal tax calculations."
+    ],
+    om: [
+      "Baga nagaan gara ETHIO TAX LINK dhuftan",
+      "Waltajjii tajaajila gibiraa dijitaalaa.",
+      "Odeeffannoo Kaffalaa Gibiraa",
+      "Odeeffannoo kaffalaa gibiraa galmeessuu fi ilaaluuf.",
+      "Tilmaama Gibiraa",
+      "Tilmaama gibiraa fakkeenyaa ilaaluuf.",
+      "Kaffaltii",
+      "Odeeffannoo kaffaltii gibiraa fi nagahee.",
+      "Sanadoota",
+      "Sanadootaa fi galmeewwan gibiraa ilaaluuf.",
+      "Hubachiisa: Kun marsariitii yaalii ti. Sirna mootummaa, Fayda, baankii ykn Telebirr waliin hin walqabanne. Tilmaamni seera gibiraa miti."
+    ]
+  };
+
+  const ids = [
+    "welcome", "intro", "profile", "profileText",
+    "estimate", "estimateText", "payment", "paymentText",
+    "documents", "documentsText", "notice"
+  ];
+
+  ids.forEach((id, index) => {
+    document.getElementById(id).textContent =
+      translations[lang][index];
+  });
+}
+</script>
+
+</body>
+</html>
