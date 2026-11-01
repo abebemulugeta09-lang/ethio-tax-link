@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETHIO TAX LINK - Dashboard</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f6f5;
+  color: #20342e;
+}
+header {
+  background: #123b32;
+  color: white;
+  padding: 20px;
+}
+header h1 { margin: 0; }
+nav {
+  background: white;
+  padding: 14px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+nav a {
+  color: #17634e;
+  text-decoration: none;
+  font-weight: bold;
+}
+main {
+  max-width: 1050px;
+  margin: auto;
+  padding: 20px;
+}
+.welcome, .card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #e1e9e5;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 15px;
+}
+.card h3 { color: #17634e; }
+.value {
+  font-size: 25px;
+  font-weight: bold;
+}
+.action {
+  display: inline-block;
+  background: #17634e;
+  color: white;
+  padding: 11px 15px;
+  border-radius: 7px;
+  text-decoration: none;
+  margin-top: 8px;
+}
+.notice {
+  background: #fff5d9;
+  padding: 15px;
+  border-radius: 9px;
+  line-height: 1.6;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #65736d;
+}
+select {
+  padding: 9px;
+  border-radius: 7px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ETHIO TAX LINK</h1>
+  <p id="subtitle">የታክስ ከፋይ ዳሽቦርድ</p>
+</header>
+
+<nav>
+  <a href="index.html" id="home">ዋና ገጽ</a>
+  <a href="registration.html" id="register">ምዝገባ</a>
+  <a href="tax-estimate.html" id="estimate">የግብር ግምት</a>
+  <a href="#payments" id="paymentLink">ክፍያዎች</a>
+  <a href="#documents" id="documentLink">ሰነዶች</a>
+</nav>
+
+<main>
+
+  <section class="welcome">
+    <label id="languageLabel">ቋንቋ ምረጥ</label>
+    <select id="language" onchange="changeLanguage()">
+      <option value="am">አማርኛ</option>
+      <option value="en">English</option>
+      <option value="om">Afaan Oromo</option>
+    </select>
+
+    <h2 id="welcome">እንኳን ወደ ዳሽቦርድ በደህና መጡ</h2>
+    <p id="intro">የታክስ አገልግሎቶችዎን እዚህ ይከታተሉ።</p>
+  </section>
+
+  <section class="grid">
+
+    <div class="card">
+      <h3 id="profile">የታክስ ከፋይ መገለጫ</h3>
+      <p id="profileText">የምዝገባ መረጃዎን ይመልከቱ።</p>
+      <a class="action" href="registration.html" id="profileButton">መመዝገብ</a>
+    </div>
+
+    <div class="card">
+      <h3 id="taxStatus">የግብር ሁኔታ</h3>
+      <div class="value" id="pending">Demo</div>
+      <p id="taxStatusText">የሙከራ ሁኔታ፤ እውነተኛ የታክስ መረጃ አይደለም።</p>
+    </div>
+
+    <div class="card">
+      <h3 id="calculator">የግብር ግምት</h3>
+      <p id="calculatorText">የሙከራ ግምት ማስላት።</p>
+      <a class="action" href="tax-estimate.html" id="calculatorButton">ማስሊያ ክፈት</a>
+    </div>
+
+    <div class="card" id="payments">
+      <h3 id="paymentsTitle">የክፍያ ታሪክ</h3>
+      <div class="value">0 ETB</div>
+      <p id="paymentsText">እስካሁን የሙከራ ክፍያ አልተመዘገበም።</p>
+    </div>
+
+    <div class="card" id="documents">
+      <h3 id="documentsTitle">ሰነዶች</h3>
+      <p id="documentsText">የታክስ ሰነዶች እዚህ ይታያሉ።</p>
+    </div>
+
+    <div class="card">
+      <h3 id="notifications">ማሳወቂያዎች</h3>
+      <p id="notificationsText">አዲስ ማሳወቂያ የለም።</p>
+    </div>
+
+  </section>
+
+  <div class="notice" id="notice">
+    ማስታወሻ፦ ይህ የሙከራ Dashboard ነው።
+    እውነተኛ የታክስ መዝገብ፣ ክፍያ፣ Fayda ወይም
+    የመንግሥት ስርዓት ግንኙነት ገና የለውም።
+  </div>
+
+</main>
+
+<footer>ETHIO TAX LINK © 2026</footer>
+
+<script>
+const translations = {
+am: {
+subtitle:"የታክስ ከፋይ ዳሽቦርድ",
+home:"ዋና ገጽ",register:"ምዝገባ",
+estimate:"የግብር ግምት",paymentLink:"ክፍያዎች",
+documentLink:"ሰነዶች",languageLabel:"ቋንቋ ምረጥ",
+welcome:"እንኳን ወደ ዳሽቦርድ በደህና መጡ",
+intro:"የታክስ አገልግሎቶችዎን እዚህ ይከታተሉ።",
+profile:"የታክስ ከፋይ መገለጫ",
+profileText:"የምዝገባ መረጃዎን ይመልከቱ።",
+profileButton:"መመዝገብ",
+taxStatus:"የግብር ሁኔታ",
+taxStatusText:"የሙከራ ሁኔታ፤ እውነተኛ የታክስ መረጃ አይደለም።",
+calculator:"የግብር ግምት",
+calculatorText:"የሙከራ ግምት ማስላት።",
+calculatorButton:"ማስሊያ ክፈት",
+paymentsTitle:"የክፍያ ታሪክ",
+paymentsText:"እስካሁን የሙከራ ክፍያ አልተመዘገበም።",
+documentsTitle:"ሰነዶች",
+documentsText:"የታክስ ሰነዶች እዚህ ይታያሉ።",
+notifications:"ማሳወቂያዎች",
+notificationsText:"አዲስ ማሳወቂያ የለም።",
+notice:"ማስታወሻ፦ ይህ የሙከራ Dashboard ነው። እውነተኛ የታክስ መዝገብ፣ ክፍያ፣ Fayda ወይም የመንግሥት ስርዓት ግንኙነት ገና የለውም።"
+},
+en: {
+subtitle:"Taxpayer Dashboard",
+home:"Home",register:"Registration",
+estimate:"Tax Estimate",paymentLink:"Payments",
+documentLink:"Documents",languageLabel:"Select Language",
+welcome:"Welcome to your Dashboard",
+intro:"Track your tax services here.",
+profile:"Taxpayer Profile",
+profileText:"View your registration information.",
+profileButton:"Register",
+taxStatus:"Tax Status",
+taxStatusText:"Demo status; not real tax information.",
+calculator:"Tax Estimate",
+calculatorText:"Calculate a demo estimate.",
+calculatorButton:"Open Calculator",
+paymentsTitle:"Payment History",
+paymentsText:"No demo payments recorded yet.",
+documentsTitle:"Documents",
+documentsText:"Your tax documents will appear here.",
+notifications:"Notifications",
+notificationsText:"No new notifications.",
+notice:"Notice: This is a demo Dashboard. It has no real tax records, payments, Fayda or government system connection."
+},
+om: {
+subtitle:"Daashboordii Kaffalaa Gibiraa",
+home:"Fuula Jalqabaa",register:"Galmee",
+estimate:"Tilmaama Gibiraa",paymentLink:"Kaffaltii",
+documentLink:"Sanadoota",languageLabel:"Afaan Filadhu",
+welcome:"Baga gara Daashboordii dhuftan",
+intro:"Tajaajila gibiraa keessan asitti hordofaa.",
+profile:"Odeeffannoo Kaffalaa Gibiraa",
+profileText:"Odeeffannoo galmee keessanii ilaalaa.",
+profileButton:"Galmaa'i",
+taxStatus:"Haala Gibiraa",
+taxStatusText:"Haala yaalii qofa; odeeffannoo gibiraa dhugaa miti.",
+calculator:"Tilmaama Gibiraa",
+calculatorText:"Tilmaama yaalii herregi.",
+calculatorButton:"Herrega Bani",
+paymentsTitle:"Seenaa Kaffaltii",
+paymentsText:"Kaffaltiin yaalii hanga ammaatti hin galmoofne.",
+documentsTitle:"Sanadoota",
+documentsText:"Sanadoonni gibiraa keessan asitti mul'atu.",
+notifications:"Beeksisa",
+notificationsText:"Beeksisni haaraan hin jiru.",
+notice:"Hubachiisa: Kun Daashboordii yaalii qofa. Galmee gibiraa dhugaa, kaffaltii, Fayda ykn sirna mootummaa waliin walqabsiisa hin qabu."
+}
+};
+
+function changeLanguage() {
+  const lang = document.getElementById("language").value;
+  const t = translations[lang];
+
+  Object.keys(t).forEach(id => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = t[id];
+  });
+}
+</script>
+
+</body>
+</html>
