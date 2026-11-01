@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETHIO TAX LINK - Tax Estimate</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f6f5;
+  color: #20342e;
+}
+header {
+  background: #123b32;
+  color: white;
+  padding: 22px;
+  text-align: center;
+}
+main {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 20px;
+}
+.card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px #0001;
+}
+label {
+  display: block;
+  margin-top: 17px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  border: 1px solid #ccd8d2;
+  border-radius: 7px;
+  font-size: 16px;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 22px;
+  background: #17634e;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+}
+.result {
+  display: none;
+  margin-top: 20px;
+  padding: 18px;
+  background: #e7f5ed;
+  border-radius: 9px;
+  line-height: 1.8;
+}
+.notice {
+  background: #fff5d9;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+.back {
+  display: inline-block;
+  margin-top: 20px;
+  color: #17634e;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #65736d;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ETHIO TAX LINK</h1>
+  <p id="subtitle">የግብር ግምት ማስሊያ</p>
+</header>
+
+<main>
+<div class="card">
+
+  <label id="languageLabel">ቋንቋ / Language</label>
+  <select id="language" onchange="changeLanguage()">
+    <option value="am">አማርኛ</option>
+    <option value="en">English</option>
+    <option value="om">Afaan Oromo</option>
+  </select>
+
+  <h2 id="title">የገቢ ግምት</h2>
+  <p id="description">የሙከራ የገቢ መጠንና የስሌት መቶኛ አስገባ።</p>
+
+  <label id="incomeLabel">የወር ገቢ (በብር)</label>
+  <input id="income" type="number" min="0" step="0.01"
+    placeholder="ለምሳሌ 50000">
+
+  <label id="rateLabel">የሙከራ ስሌት መቶኛ (%)</label>
+  <input id="rate" type="number" min="0" max="100"
+    step="0.01" placeholder="ለምሳሌ 5">
+
+  <button id="calculate" onclick="calculateTax()">
+    ግምት አስላ
+  </button>
+
+  <div class="result" id="result">
+    <h3 id="resultTitle">የስሌት ውጤት</h3>
+    <p><span id="incomeResultLabel">የገቢ መጠን፦</span>
+      <strong id="incomeResult"></strong></p>
+    <p><span id="rateResultLabel">የሙከራ መቶኛ፦</span>
+      <strong id="rateResult"></strong></p>
+    <p><span id="taxResultLabel">የሙከራ ውጤት፦</span>
+      <strong id="taxResult"></strong></p>
+  </div>
+
+  <div class="notice" id="notice">
+    ማስጠንቀቂያ፦ ይህ ለሙከራ ብቻ የተዘጋጀ ማስሊያ ነው።
+    የገቢ ግብር ሕግ፣ ተቀናሾች ወይም እውነተኛ የግብር መጠኖችን
+    አይወክልም። የሚገባው መቶኛ የሙከራ ግቤት ብቻ ነው።
+  </div>
+
+  <a class="back" href="index.html" id="back">← ወደ ዋናው ገጽ</a>
+</div>
+</main>
+
+<footer>ETHIO TAX LINK © 2026</footer>
+
+<script>
+const words = {
+am: {
+subtitle:"የግብር ግምት ማስሊያ",
+languageLabel:"ቋንቋ",
+title:"የገቢ ግምት",
+description:"የሙከራ የገቢ መጠንና የስሌት መቶኛ አስገባ።",
+incomeLabel:"የወር ገቢ (በብር)",
+rateLabel:"የሙከራ ስሌት መቶኛ (%)",
+calculate:"ግምት አስላ",
+resultTitle:"የስሌት ውጤት",
+incomeResultLabel:"የገቢ መጠን፦",
+rateResultLabel:"የሙከራ መቶኛ፦",
+taxResultLabel:"የሙከራ ውጤት፦",
+notice:"ማስጠንቀቂያ፦ ይህ ለሙከራ ብቻ የተዘጋጀ ማስሊያ ነው። የግብር ሕግን ወይም እውነተኛ የግብር መጠኖችን አይወክልም።",
+back:"← ወደ ዋናው ገጽ",
+error:"እባክህ ትክክለኛ የገቢ እና የመቶኛ ቁጥር አስገባ።"
+},
+en: {
+subtitle:"Tax Estimate Calculator",
+languageLabel:"Language",
+title:"Income Estimate",
+description:"Enter a demo income amount and a percentage for calculation.",
+incomeLabel:"Monthly income (ETB)",
+rateLabel:"Demo calculation rate (%)",
+calculate:"Calculate Estimate",
+resultTitle:"Calculation Result",
+incomeResultLabel:"Income amount: ",
+rateResultLabel:"Demo rate: ",
+taxResultLabel:"Demo result: ",
+notice:"Warning: This is a demo calculator only. It does not represent tax law, deductions, or official tax rates. The percentage is a user-entered demo value.",
+back:"← Back to Home",
+error:"Please enter valid income and percentage values."
+},
+om: {
+subtitle:"Herrega Tilmaama Gibiraa",
+languageLabel:"Afaan",
+title:"Tilmaama Galii",
+description:"Galii yaalii fi dhibbeentaa herregaa galchi.",
+incomeLabel:"Galii ji'aa (ETB)",
+rateLabel:"Dhibbeentaa yaalii (%)",
+calculate:"Tilmaama Herregi",
+resultTitle:"Bu'aa Herregaa",
+incomeResultLabel:"Galii: ",
+rateResultLabel:"Dhibbeentaa yaalii: ",
+taxResultLabel:"Bu'aa yaalii: ",
+notice:"Hubachiisa: Kun herrega yaalii qofa. Seera gibiraa ykn dhibbeentaa gibiraa mootummaa hin bakka bu'u.",
+back:"← Gara fuula jalqabaa",
+error:"Maaloo galii fi dhibbeentaa sirrii galchi."
+}
+};
+
+function changeLanguage() {
+  const lang = document.getElementById("language").value;
+  const t = words[lang];
+
+  Object.keys(t).forEach(key => {
+    const element = document.getElementById(key);
+    if (element) element.textContent = t[key];
+  });
+}
+
+function calculateTax() {
+  const income = Number(document.getElementById("income").value);
+  const rate = Number(document.getElementById("rate").value);
+  const lang = document.getElementById("language").value;
+  const t = words[lang];
+
+  if (
+    document.getElementById("income").value.trim() === "" ||
+    document.getElementById("rate").value.trim() === "" ||
+    !Number.isFinite(income) ||
+    !Number.isFinite(rate) ||
+    income < 0 || rate < 0 || rate > 100
+  ) {
+    alert(t.error);
+    return;
+  }
+
+  const result = income * rate / 100;
+
+  document.getElementById("incomeResult").textContent =
+    income.toLocaleString() + " ETB";
+  document.getElementById("rateResult").textContent = rate + "%";
+  document.getElementById("taxResult").textContent =
+    result.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }) + " ETB";
+
+  document.getElementById("result").style.display = "block";
+}
+</script>
+</body>
+</html>
