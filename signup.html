@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETHIO TAX LINK - Account</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#172554}
+header{background:#123b67;color:white;padding:20px;text-align:center}
+main{max-width:440px;margin:30px auto;padding:22px;background:white;border-radius:14px;box-shadow:0 4px 18px #0001}
+h2{text-align:center}
+label{display:block;margin:13px 0 6px;font-weight:bold}
+input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font-size:16px}
+button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:7px;background:#1769aa;color:white;font-size:16px;cursor:pointer}
+button.secondary{background:#475569}
+button:disabled{opacity:.6}
+.switch{text-align:center;margin-top:16px}
+.switch a{color:#1769aa;cursor:pointer}
+#message{padding:10px;margin-top:14px;border-radius:7px;display:none;overflow-wrap:anywhere}
+footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>ETHIO TAX LINK</h1>
+<p id="subtitle">የታክስ አገልግሎት መድረክ</p>
+</header>
+
+<main>
+<div style="text-align:right">
+<select id="language" aria-label="Language">
+<option value="am">አማርኛ</option>
+<option value="en">English</option>
+<option value="om">Afaan Oromo</option>
+</select>
+</div>
+
+<h2 id="heading">መለያ ፍጠር</h2>
+
+<form id="authForm">
+<label id="emailLabel" for="email">Email</label>
+<input id="email" type="email" required autocomplete="email"
+placeholder="example@email.com">
+
+<label id="passwordLabel" for="password">የይለፍ ቃል</label>
+<input id="password" type="password" required minlength="6"
+autocomplete="new-password" placeholder="ቢያንስ 6 ቁምፊ">
+
+<button id="submitButton" type="submit">መመዝገብ</button>
+</form>
+
+<button id="logoutButton" class="secondary" type="button" hidden>
+ውጣ
+</button>
+
+<div id="message" role="status"></div>
+
+<div class="switch">
+<span id="switchText">መለያ አለህ?</span>
+<a id="switchLink">ግባ</a>
+</div>
+
+<p style="text-align:center;margin-top:22px">
+<a href="index.html">ወደ መነሻ ገጽ</a>
+</p>
+</main>
+
+<footer>
+ETHIO TAX LINK — Demo version
+<br>ይህ ገጽ የሙከራ ስሪት ነው።
+</footer>
+
+<script type="module">
+import { supabase } from "./supabase-config.js";
+
+const translations = {
+am: {
+subtitle:"የታክስ አገልግሎት መድረክ",
+signup:"መለያ ፍጠር", login:"ወደ መለያህ ግባ",
+email:"Email", password:"የይለፍ ቃል",
+register:"መመዝገብ", signIn:"ግባ", logout:"ውጣ",
+have:"መለያ አለህ?", noAccount:"መለያ የለህም?",
+switchLogin:"ግባ", switchSignup:"አዲስ መለያ ፍጠር",
+created:"ምዝገባህ ተሳክቷል። ኢሜይልህን አረጋግጥ።",
+logged:"በተሳካ ሁኔታ ገብተሃል።",
+loggedOut:"ከመለያህ ወጥተሃል።",
+error:"ስህተት፦ ", session:"መለያህ ክፍት ነው።",
+passwordHint:"ቢያንስ 6 ቁምፊ"
+},
+en: {
+subtitle:"Digital Tax Services Platform",
+signup:"Create Account", login:"Sign In",
+email:"Email", password:"Password",
+register:"Sign Up", signIn:"Sign In", logout:"Log Out",
+have:"Already have an account?", noAccount:"No account?",
+switchLogin:"Sign In", switchSignup:"Create an account",
+created:"Registration submitted. Please check your email.",
+logged:"You are signed in.",
+loggedOut:"You are signed out.",
+error:"Error: ", session:"You are signed in.",
+passwordHint:"At least 6 characters"
+},
+om: {
+subtitle:"Waltajjii Tajaajila Gibiraa",
+signup:"Herrega Uumi", login:"Seeni",
+email:"Imeelii", password:"Jecha Darbii",
+register:"Galmaa'i", signIn:"Seeni", logout:"Ba'i",
+have:"Herrega qabdaa?", noAccount:"Herrega hin qabduu?",
+switchLogin:"Seeni", switchSignup:"Herrega uumi",
+created:"Galmeen ergameera. Imeelii kee mirkaneessi.",
+logged:"Milkaa'inaan seenteetta.",
+loggedOut:"Baateetta.",
+error:"Dogoggora: ", session:"Seenteetta.",
+passwordHint:"Yoo xiqqaate qubee 6"
+}
+};
+
+let mode = "signup";
+let lang = "am";
+
+const $ = id => document.getElementById(id);
+const message = $("message");
+
+function showMessage(text, success=false) {
+ message.textContent = text;
+ message.style.display = "block";
+ message.style.background = success ? "#dcfce7" : "#fee2e2";
+ message.style.color = success ? "#166534" : "#991b1b";
+}
+
+function render() {
+ const t = translations[lang];
+ $("subtitle").textContent = t.subtitle;
+ $("heading").textContent = mode === "signup" ? t.signup : t.login;
+ $("emailLabel").textContent = t.email;
+ $("passwordLabel").textContent = t.password;
+ $("submitButton").textContent = mode === "signup" ? t.register : t.signIn;
+ $("switchText").textContent = mode === "signup" ? t.have : t.noAccount;
+ $("switchLink").textContent = mode === "signup" ? t.switchLogin : t.switchSignup;
+ $("logoutButton").textContent = t.logout;
+ $("password").placeholder = t.passwordHint;
+}
+
+$("language").addEventListener("change", e => {
+ lang = e.target.value;
+ render();
+});
+
+$("switchLink").addEventListener("click", () => {
+ mode = mode === "signup" ? "login" : "signup";
+ message.style.display = "none";
+ $("password").value = "";
+ render();
+});
+
+$("authForm").addEventListener("submit", async e => {
+ e.preventDefault();
+
+ const email = $("email").value.trim();
+ const password = $("password").value;
+ const button = $("submitButton");
+ const t = translations[lang];
+
+ button.disabled = true;
+ message.style.display = "none";
+
+ try {
+   if (mode === "signup") {
+     const { data, error } = await supabase.auth.signUp({
+       email,
+       password
+     });
+     if (error) throw error;
+
+     if (data.session) {
+       showMessage(t.created, true);
+     } else {
+       showMessage(t.created, true);
+     }
+   } else {
+     const { error } = await supabase.auth.signInWithPassword({
+       email,
+       password
+     });
+     if (error) throw error;
+
+     showMessage(t.logged, true);
+     $("logoutButton").hidden = false;
+   }
+ } catch (error) {
+   showMessage(t.error + error.message);
+ } finally {
+   button.disabled = false;
+ }
+});
+
+$("logoutButton").addEventListener("click", async () => {
+ const { error } = await supabase.auth.signOut();
+ if (error) {
+   showMessage(translations[lang].error + error.message);
+   return;
+ }
+ $("logoutButton").hidden = true;
+ showMessage(translations[lang].loggedOut, true);
+});
+
+async function checkSession() {
+ const { data } = await supabase.auth.getSession();
+ if (data.session) {
+   $("logoutButton").hidden = false;
+   showMessage(translations[lang].session, true);
+ }
+}
+
+supabase.auth.onAuthStateChange((event, session) => {
+ if (event === "SIGNED_IN" && session) {
+   $("logoutButton").hidden = false;
+ }
+ if (event === "SIGNED_OUT") {
+   $("logoutButton").hidden = true;
+ }
+});
+
+render();
+checkSession();
+</script>
+</body>
+</html>
