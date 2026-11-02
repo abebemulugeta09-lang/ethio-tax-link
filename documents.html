@@ -6,126 +6,195 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ETHIO TAX LINK - Documents</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f6fa;
       margin: 0;
       padding: 20px;
-      color: #263238;
+      font-family: Arial, sans-serif;
+      background: #f2f5f8;
+      color: #1d2939;
     }
-    header {
-      background: #075b45;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      border-radius: 12px;
-    }
-    .card {
+    .container {
+      max-width: 700px;
+      margin: 25px auto;
+      padding: 25px;
       background: white;
-      padding: 20px;
-      margin-top: 18px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px #00000012;
+      box-shadow: 0 3px 14px #00000012;
+    }
+    h1 { text-align: center; color: #075b43; }
+    label { display: block; font-weight: bold; margin-bottom: 8px; }
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 16px;
     }
     .receipt {
-      border: 1px solid #ddd;
-      padding: 15px;
+      border: 1px solid #cbd5e1;
       border-radius: 10px;
+      padding: 20px;
+      margin-top: 22px;
+      text-align: center;
     }
+    .receipt h2 { color: #075b43; }
+    .details { text-align: left; line-height: 2; }
     .qr {
       display: block;
       width: 160px;
       height: 160px;
-      margin: 15px auto;
+      margin: 20px auto;
     }
-    .notice {
-      color: #9a5900;
-      font-size: 13px;
-    }
-    a { color: #075b45; }
     button {
-      background: #075b45;
+      padding: 12px 18px;
+      background: #087451;
       color: white;
-      border: 0;
-      padding: 11px 16px;
+      border: none;
       border-radius: 7px;
+      font-size: 15px;
       cursor: pointer;
     }
-    .status { color: #087b43; font-weight: bold; }
+    .notice {
+      margin-top: 22px;
+      padding: 14px;
+      background: #fff4d6;
+      border-radius: 7px;
+      line-height: 1.6;
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 22px;
+    }
+    @media(max-width: 500px) {
+      .container { padding: 15px; }
+      .links { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
+  <main class="container">
+    <label id="languageLabel" for="language">ቋንቋ ይምረጡ</label>
+    <select id="language" onchange="changeLanguage()">
+      <option value="am">አማርኛ</option>
+      <option value="en">English</option>
+      <option value="om">Afaan Oromo</option>
+    </select>
 
-<header>
-  <h1>ETHIO TAX LINK</h1>
-  <h2>የሰነዶች እና ደረሰኞች ገጽ</h2>
-  <p>Documents & Digital Receipts</p>
-</header>
+    <h1 id="pageTitle">የግብር ሰነዶች</h1>
+    <p id="intro">የሙከራ ደረሰኝና የሰነድ መረጃ</p>
 
-<div class="card">
-  <h2>የእኔ ሰነዶች</h2>
-  <p>የግብር ማስረጃዎች፦ 0</p>
-  <p>የክፍያ ደረሰኞች፦ 0</p>
-  <p>የግብር ሪፖርቶች፦ 0</p>
-  <p class="notice">
-    ይህ የሙከራ ገጽ ነው። እውነተኛ የግብር ሰነዶች አልተገናኙም።
-  </p>
-</div>
+    <section class="receipt">
+      <h2 id="receiptTitle">የሙከራ የክፍያ ደረሰኝ</h2>
 
-<div class="card">
-  <h2>የምሳሌ የክፍያ ደረሰኝ</h2>
+      <div class="details">
+        <p><strong id="receiptNumberLabel">የደረሰኝ ቁጥር፦</strong> ETL-DEMO-0001</p>
+        <p><strong id="amountLabel">የሙከራ መጠን፦</strong> 2,500 ETB</p>
+        <p><strong id="dateLabel">ቀን፦</strong> Demo Date</p>
+        <p><strong id="statusLabel">ሁኔታ፦</strong> <span id="statusValue">የሙከራ ብቻ</span></p>
+      </div>
 
-  <div class="receipt">
-    <h3 style="text-align:center">ETHIO TAX LINK</h3>
-    <h3 style="text-align:center">የክፍያ ደረሰኝ</h3>
+      <img
+        class="qr"
+        src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=ETL-DEMO-0001"
+        alt="Demo receipt QR code"
+      >
 
-    <p>የደረሰኝ ቁጥር፦ ETL-DEMO-0001</p>
-    <p>የክፍያ መጠን፦ 2,500 ETB</p>
-    <p>የክፍያ ቀን፦ Demo Date</p>
-    <p>የክፍያ ሁኔታ፦
-      <span class="status">Demo Only</span>
-    </p>
+      <p id="qrCaption">የሙከራ QR Code</p>
+      <button type="button" onclick="verifyReceipt()" id="verifyButton">
+        ደረሰኙን አረጋግጥ
+      </button>
+      <p id="verificationResult" aria-live="polite"></p>
+    </section>
 
-    <img
-      class="qr"
-      alt="Demo QR Code"
-      src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=ETL-DEMO-0001">
+    <div class="notice" id="notice">
+      ማስታወሻ፦ ይህ የሙከራ ደረሰኝ ብቻ ነው።
+      እውነተኛ ክፍያ አልተፈጸመም።
+      QR Code የሙከራ መለያ ብቻ ይይዛል።
+    </div>
 
-    <p style="text-align:center">
-      የምሳሌ QR Code
-    </p>
+    <div class="links">
+      <a href="dashboard.html" id="dashboardLink">ወደ Dashboard ተመለስ</a>
+      <a href="index.html" id="homeLink">ወደ መነሻ ገጽ ተመለስ</a>
+    </div>
+  </main>
 
-    <button onclick="verifyReceipt()">
-      ደረሰኙን አረጋግጥ
-    </button>
-    <p id="result"></p>
-  </div>
+  <script>
+    const translations = {
+      am: {
+        languageLabel: "ቋንቋ ይምረጡ",
+        pageTitle: "የግብር ሰነዶች",
+        intro: "የሙከራ ደረሰኝና የሰነድ መረጃ",
+        receiptTitle: "የሙከራ የክፍያ ደረሰኝ",
+        receiptNumberLabel: "የደረሰኝ ቁጥር፦",
+        amountLabel: "የሙከራ መጠን፦",
+        dateLabel: "ቀን፦",
+        statusLabel: "ሁኔታ፦",
+        statusValue: "የሙከራ ብቻ",
+        qrCaption: "የሙከራ QR Code",
+        verifyButton: "ደረሰኙን አረጋግጥ",
+        notice: "ማስታወሻ፦ ይህ የሙከራ ደረሰኝ ብቻ ነው። እውነተኛ ክፍያ አልተፈጸመም። QR Code የሙከራ መለያ ብቻ ይይዛል።",
+        dashboardLink: "ወደ Dashboard ተመለስ",
+        homeLink: "ወደ መነሻ ገጽ ተመለስ",
+        verificationResult: "ይህ የሙከራ ደረሰኝ ነው፤ እውነተኛ ክፍያ አልተረጋገጠም።"
+      },
+      en: {
+        languageLabel: "Select Language",
+        pageTitle: "Tax Documents",
+        intro: "Demo receipt and document information",
+        receiptTitle: "Demo Payment Receipt",
+        receiptNumberLabel: "Receipt Number:",
+        amountLabel: "Demo Amount:",
+        dateLabel: "Date:",
+        statusLabel: "Status:",
+        statusValue: "Demo Only",
+        qrCaption: "Demo QR Code",
+        verifyButton: "Verify Receipt",
+        notice: "Notice: This is a demo receipt only. No real payment has been made. The QR code contains a demo reference only.",
+        dashboardLink: "Return to Dashboard",
+        homeLink: "Return to Home",
+        verificationResult: "This is a demo receipt; no real payment has been verified."
+      },
+      om: {
+        languageLabel: "Afaan filadhu",
+        pageTitle: "Sanadoota Gibiraa",
+        intro: "Odeeffannoo nagahee fi sanadaa yaalii",
+        receiptTitle: "Nagahee Kaffaltii Yaalii",
+        receiptNumberLabel: "Lakkoofsa Nagahee:",
+        amountLabel: "Hanga Yaalii:",
+        dateLabel: "Guyyaa:",
+        statusLabel: "Haala:",
+        statusValue: "Yaalii Qofa",
+        qrCaption: "QR Code Yaalii",
+        verifyButton: "Nagahee Mirkaneessi",
+        notice: "Hubachiisa: Kun nagahee yaalii qofa. Kaffaltiin dhugaa hin raawwatamne. QR code kun mallattoo yaalii qofa qaba.",
+        dashboardLink: "Gara Dashboard deebi'i",
+        homeLink: "Gara fuula jalqabaatti deebi'i",
+        verificationResult: "Kun nagahee yaalii dha; kaffaltiin dhugaa hin mirkanoofne."
+      }
+    };
 
-  <p class="notice">
-    ማስጠንቀቂያ፦ ይህ የሙከራ ደረሰኝ ነው።
-    እውነተኛ ክፍያ አልተፈጸመም።
-    QR Code የምሳሌ መለያን ብቻ ይይዛል።
-  </p>
-</div>
+    function changeLanguage() {
+      const lang = document.getElementById("language").value;
+      const t = translations[lang];
+      document.documentElement.lang = lang;
 
-<div class="card">
-  <h2>የማረጋገጫ መረጃ</h2>
-  <p>የሕዝብ ማረጋገጫ፦ QR Code በመቃኘት።</p>
-  <p>የባለሥልጣን ማረጋገጫ፦ በተፈቀደ መለያ በመግባት።</p>
-</div>
+      Object.keys(t).forEach(function(id) {
+        if (id !== "verificationResult") {
+          document.getElementById(id).textContent = t[id];
+        }
+      });
+      document.getElementById("verificationResult").textContent = "";
+    }
 
-<div class="card">
-  <a href="dashboard.html">← ወደ Dashboard ተመለስ</a>
-  <br><br>
-  <a href="index.html">ወደ መነሻ ገጽ</a>
-</div>
-
-<script>
-function verifyReceipt() {
-  document.getElementById("result").innerHTML =
-    "ይህ ETL-DEMO-0001 የሙከራ ደረሰኝ ነው። እውነተኛ ክፍያ አልተረጋገጠም።";
-}
-</script>
-
+    function verifyReceipt() {
+      const lang = document.getElementById("language").value;
+      document.getElementById("verificationResult").textContent =
+        translations[lang].verificationResult;
+    }
+  </script>
 </body>
 </html>
