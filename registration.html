@@ -2,92 +2,166 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ETHIO TAX LINK - Registration</title>
-<style>
-body{margin:0;font-family:Arial;background:#f1f5f3;color:#20342e}
-header{background:#123b32;color:white;padding:22px}
-main{max-width:650px;margin:25px auto;padding:18px}
-form,.intro{background:white;padding:20px;border-radius:12px;margin-bottom:15px}
-label{display:block;margin-top:15px;font-weight:bold}
-input,select{width:100%;padding:12px;margin-top:7px;border:1px solid #ccd8d1;border-radius:7px;font-size:16px}
-button{background:#17634e;color:white;border:0;padding:14px;border-radius:8px;margin-top:20px;width:100%;font-size:16px}
-.note{background:#fff4d7;padding:14px;border-radius:8px;line-height:1.6}
-a{color:white}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETHIO TAX LINK - Taxpayer Registration</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f2f5f8;
+      color: #1d2939;
+    }
+    .container {
+      max-width: 650px;
+      margin: 25px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px #00000012;
+    }
+    h1 { color: #075b43; text-align: center; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 7px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 22px;
+      background: #087451;
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .language { margin-bottom: 20px; }
+    .notice {
+      margin-top: 20px;
+      padding: 12px;
+      background: #fff4d6;
+      border-radius: 7px;
+      line-height: 1.6;
+    }
+    .home { display: block; margin-top: 20px; text-align: center; }
+  </style>
 </head>
 <body>
-<header>
-<h2>ETHIO TAX LINK</h2>
-<p>የግብር ከፋይ ምዝገባ</p>
-<a href="index.html">ወደ ዋናው ገጽ ተመለስ</a>
-</header>
-<main>
-<div class="intro">
-<h2>የግብር ከፋይ መመዝገቢያ</h2>
-<p>እባክዎ የሚከተለውን መረጃ ይሙሉ።</p>
-</div>
+  <main class="container">
+    <div class="language">
+      <label id="languageLabel" for="language">ቋንቋ ይምረጡ</label>
+      <select id="language" onchange="changeLanguage()">
+        <option value="am">አማርኛ</option>
+        <option value="en">English</option>
+        <option value="om">Afaan Oromo</option>
+      </select>
+    </div>
 
-<form id="taxForm">
-<label>የግብር ከፋይ ዓይነት</label>
-<select id="type" required>
-<option value="">ይምረጡ</option>
-<option>ግለሰብ ነጋዴ</option>
-<option>ኩባንያ</option>
-<option>የትራንስፖርት አገልግሎት</option>
-<option>ሌላ የንግድ ዓይነት</option>
-</select>
+    <h1 id="title">የግብር ከፋይ ምዝገባ</h1>
+    <p id="intro">የሙከራ የግብር ከፋይ ምዝገባ ቅጽ</p>
 
-<label>ሙሉ ስም / የድርጅት ስም</label>
-<input type="text" required placeholder="ስም ያስገቡ">
+    <form onsubmit="demoRegister(event)">
+      <label id="nameLabel" for="fullName">ሙሉ ስም</label>
+      <input id="fullName" type="text" required>
 
-<label>TIN ቁጥር</label>
-<input type="text" placeholder="የሙከራ TIN">
+      <label id="typeLabel" for="taxpayerType">የግብር ከፋይ አይነት</label>
+      <select id="taxpayerType" required>
+        <option value="individual" id="individualOption">ግለሰብ</option>
+        <option value="business" id="businessOption">ድርጅት / ንግድ</option>
+      </select>
 
-<label>የንግድ ፈቃድ ቁጥር</label>
-<input type="text" placeholder="የፈቃድ ቁጥር">
+      <label id="emailLabel" for="email">ኢሜይል</label>
+      <input id="email" type="email">
 
-<label>የስልክ ቁጥር</label>
-<input type="tel" placeholder="09XXXXXXXX">
+      <label id="phoneLabel" for="phone">ስልክ ቁጥር</label>
+      <input id="phone" type="tel">
 
-<label>ክልል / ከተማ</label>
-<select required>
-<option value="">ይምረጡ</option>
-<option>አዲስ አበባ</option>
-<option>ኦሮሚያ</option>
-<option>አማራ</option>
-<option>ትግራይ</option>
-<option>ደቡብ ኢትዮጵያ</option>
-<option>ሲዳማ</option>
-<option>ሶማሌ</option>
-<option>አፋር</option>
-<option>ቤኒሻንጉል-ጉሙዝ</option>
-<option>ጋምቤላ</option>
-<option>ሐረሪ</option>
-<option>ድሬዳዋ</option>
-<option>ሌላ</option>
-</select>
+      <button id="submitButton" type="submit">የሙከራ ምዝገባ</button>
+    </form>
 
-<label>የአድራሻ ዝርዝር</label>
-<input type="text" placeholder="ዞን፣ ወረዳ፣ ቀበሌ">
+    <div class="notice" id="notice">
+      ማስታወሻ፦ ይህ የሙከራ ቅጽ ብቻ ነው።
+      ከመንግሥት ወይም ከFayda ጋር አልተገናኘም።
+      እውነተኛ TIN፣ Fayda ወይም የግል መረጃ አታስገቡ።
+    </div>
 
-<button type="submit">የሙከራ ምዝገባ አስገባ</button>
-</form>
+    <a class="home" id="homeLink" href="index.html">ወደ መነሻ ገጽ ተመለስ</a>
+  </main>
 
-<div class="note">
-<strong>ማስጠንቀቂያ፦</strong>
-ይህ የሙከራ ቅጽ ነው።
-መረጃው ወደ መንግሥት ሥርዓት አይላክም፤
-TIN፣ Fayda ወይም እውነተኛ የግል መረጃ አታስገቡ።
-</div>
-</main>
+  <script>
+    const translations = {
+      am: {
+        languageLabel: "ቋንቋ ይምረጡ",
+        title: "የግብር ከፋይ ምዝገባ",
+        intro: "የሙከራ የግብር ከፋይ ምዝገባ ቅጽ",
+        nameLabel: "ሙሉ ስም",
+        typeLabel: "የግብር ከፋይ አይነት",
+        individualOption: "ግለሰብ",
+        businessOption: "ድርጅት / ንግድ",
+        emailLabel: "ኢሜይል",
+        phoneLabel: "ስልክ ቁጥር",
+        submitButton: "የሙከራ ምዝገባ",
+        notice: "ማስታወሻ፦ ይህ የሙከራ ቅጽ ብቻ ነው። ከመንግሥት ወይም ከFayda ጋር አልተገናኘም። እውነተኛ TIN፣ Fayda ወይም የግል መረጃ አታስገቡ።",
+        homeLink: "ወደ መነሻ ገጽ ተመለስ",
+        success: "የሙከራ ቅጹ ተሞልቷል። መረጃው አልተቀመጠም።"
+      },
+      en: {
+        languageLabel: "Select Language",
+        title: "Taxpayer Registration",
+        intro: "Demo taxpayer registration form",
+        nameLabel: "Full Name",
+        typeLabel: "Taxpayer Type",
+        individualOption: "Individual",
+        businessOption: "Company / Business",
+        emailLabel: "Email",
+        phoneLabel: "Phone Number",
+        submitButton: "Demo Registration",
+        notice: "Notice: This is a demo form only. It is not connected to government systems or Fayda. Do not enter real TIN, Fayda or personal information.",
+        homeLink: "Return to Home",
+        success: "Demo form completed. No information has been saved."
+      },
+      om: {
+        languageLabel: "Afaan filadhu",
+        title: "Galmee Kaffalaa Gibiraa",
+        intro: "Unka galmee kaffalaa gibiraa yaalii",
+        nameLabel: "Maqaa guutuu",
+        typeLabel: "Gosa kaffalaa gibiraa",
+        individualOption: "Nama dhuunfaa",
+        businessOption: "Dhaabbata / Daldala",
+        emailLabel: "Imeelii",
+        phoneLabel: "Lakkoofsa bilbilaa",
+        submitButton: "Galmee yaalii",
+        notice: "Hubachiisa: Kun unka yaalii qofa. Sirna mootummaa ykn Fayda waliin hin walqabanne. TIN, Fayda ykn odeeffannoo dhuunfaa dhugaa hin galchin.",
+        homeLink: "Gara fuula jalqabaatti deebi'i",
+        success: "Unki yaalii guutameera. Odeeffannoon hin kuufamne."
+      }
+    };
 
-<script>
-document.getElementById("taxForm").addEventListener("submit",function(e){
-e.preventDefault();
-alert("የሙከራ ቅጹ በትክክል ተሞልቷል። እውነተኛ ምዝገባ አልተፈጸመም።");
-});
-</script>
+    function changeLanguage() {
+      const lang = document.getElementById("language").value;
+      const t = translations[lang];
+      document.documentElement.lang = lang;
+
+      Object.keys(t).forEach(function(id) {
+        if (id !== "success") {
+          document.getElementById(id).textContent = t[id];
+        }
+      });
+    }
+
+    function demoRegister(event) {
+      event.preventDefault();
+      const lang = document.getElementById("language").value;
+      alert(translations[lang].success);
+    }
+  </script>
 </body>
 </html>
