@@ -9,20 +9,27 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#172554}
 header{background:#123b67;color:white;padding:20px;text-align:center}
-main{max-width:440px;margin:30px auto;padding:22px;background:white;border-radius:14px;box-shadow:0 4px 18px #0001}
+main{max-width:440px;margin:25px auto;padding:22px;background:white;border-radius:14px;box-shadow:0 4px 18px #0001}
 h2{text-align:center}
 label{display:block;margin:13px 0 6px;font-weight:bold}
 input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font-size:16px}
+.password-row{display:flex;gap:7px}
+.password-row input{flex:1;min-width:0}
+.password-row button{width:auto;min-width:85px;margin:0;padding:10px;font-size:14px}
 button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:7px;background:#1769aa;color:white;font-size:16px;cursor:pointer}
 button.secondary{background:#475569}
 button:disabled{opacity:.6}
 .switch{text-align:center;margin-top:16px}
-.switch a{color:#1769aa;cursor:pointer}
+.switch a,.forgot a{color:#1769aa;cursor:pointer}
+.forgot{text-align:right;margin-top:12px;font-size:14px}
+.home{text-align:center;margin:18px 0 5px}
+.home a{color:#1769aa;font-weight:bold;text-decoration:none}
 #message{padding:10px;margin-top:14px;border-radius:7px;display:none;overflow-wrap:anywhere}
 footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
 </style>
 </head>
 <body>
+
 <header>
 <h1>ETHIO TAX LINK</h1>
 <p id="subtitle">የታክስ አገልግሎት መድረክ</p>
@@ -44,27 +51,34 @@ footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
 <input id="email" type="email" required autocomplete="email"
 placeholder="example@email.com">
 
+<div id="passwordArea">
 <label id="passwordLabel" for="password">የይለፍ ቃል</label>
-<input id="password" type="password" required minlength="6"
+<div class="password-row">
+<input id="password" type="password" minlength="6"
 autocomplete="new-password" placeholder="ቢያንስ 6 ቁምፊ">
+<button id="togglePassword" type="button" class="secondary">አሳይ</button>
+</div>
+</div>
+
+<div id="forgotArea" class="forgot" hidden>
+<a href="#" id="forgotLink">የይለፍ ቃል ረሳህ?</a>
+</div>
 
 <button id="submitButton" type="submit">መመዝገብ</button>
 </form>
 
-<button id="logoutButton" class="secondary" type="button" hidden>
-ውጣ
-</button>
+<button id="logoutButton" class="secondary" type="button" hidden>ውጣ</button>
 
 <div id="message" role="status"></div>
 
-<div class="switch">
+<div class="switch" id="switchArea">
 <span id="switchText">መለያ አለህ?</span>
-<a id="switchLink">ግባ</a>
+<a id="switchLink" href="#">ግባ</a>
 </div>
 
-<p style="text-align:center;margin-top:22px">
-<a href="index.html">ወደ መነሻ ገጽ</a>
-</p>
+<div class="home">
+<a href="index.html" id="homeLink">← ወደ መነሻ ገጽ</a>
+</div>
 </main>
 
 <footer>
@@ -76,151 +90,237 @@ ETHIO TAX LINK — Demo version
 import { supabase } from "./supabase-config.js";
 
 const translations = {
-am: {
+am:{
 subtitle:"የታክስ አገልግሎት መድረክ",
-signup:"መለያ ፍጠር", login:"ወደ መለያህ ግባ",
-email:"Email", password:"የይለፍ ቃል",
-register:"መመዝገብ", signIn:"ግባ", logout:"ውጣ",
-have:"መለያ አለህ?", noAccount:"መለያ የለህም?",
-switchLogin:"ግባ", switchSignup:"አዲስ መለያ ፍጠር",
+signup:"መለያ ፍጠር",login:"ወደ መለያህ ግባ",
+forgotTitle:"የይለፍ ቃል መመለሻ",
+resetTitle:"አዲስ የይለፍ ቃል አዘጋጅ",
+email:"ኢሜይል",password:"የይለፍ ቃል",
+register:"መመዝገብ",signIn:"ግባ",
+sendReset:"የመመለሻ ሊንክ ላክ",
+savePassword:"አዲስ የይለፍ ቃል አስቀምጥ",
+logout:"ውጣ",show:"አሳይ",hide:"ደብቅ",
+have:"መለያ አለህ?",noAccount:"መለያ የለህም?",
+switchLogin:"ግባ",switchSignup:"አዲስ መለያ ፍጠር",
+forgot:"የይለፍ ቃል ረሳህ?",
+home:"← ወደ መነሻ ገጽ",
 created:"ምዝገባህ ተሳክቷል። ኢሜይልህን አረጋግጥ።",
 logged:"በተሳካ ሁኔታ ገብተሃል።",
 loggedOut:"ከመለያህ ወጥተሃል።",
-error:"ስህተት፦ ", session:"መለያህ ክፍት ነው።",
-passwordHint:"ቢያንስ 6 ቁምፊ"
+resetSent:"የመመለሻ ሊንክ ወደ ኢሜይልህ ተልኳል።",
+passwordSaved:"አዲሱ የይለፍ ቃል ተቀይሯል።",
+session:"መለያህ ክፍት ነው።",
+error:"ስህተት፦ ",
+passwordHint:"ቢያንስ 6 ቁምፊ",
+enterEmail:"ኢሜይልህን አስገባ።"
 },
-en: {
+en:{
 subtitle:"Digital Tax Services Platform",
-signup:"Create Account", login:"Sign In",
-email:"Email", password:"Password",
-register:"Sign Up", signIn:"Sign In", logout:"Log Out",
-have:"Already have an account?", noAccount:"No account?",
-switchLogin:"Sign In", switchSignup:"Create an account",
+signup:"Create Account",login:"Sign In",
+forgotTitle:"Reset Your Password",
+resetTitle:"Set a New Password",
+email:"Email",password:"Password",
+register:"Sign Up",signIn:"Sign In",
+sendReset:"Send Reset Link",
+savePassword:"Save New Password",
+logout:"Log Out",show:"Show",hide:"Hide",
+have:"Already have an account?",noAccount:"No account?",
+switchLogin:"Sign In",switchSignup:"Create an account",
+forgot:"Forgot Password?",
+home:"← Back to Homepage",
 created:"Registration submitted. Please check your email.",
 logged:"You are signed in.",
 loggedOut:"You are signed out.",
-error:"Error: ", session:"You are signed in.",
-passwordHint:"At least 6 characters"
+resetSent:"A password reset link has been sent to your email.",
+passwordSaved:"Your password has been updated.",
+session:"You are signed in.",
+error:"Error: ",
+passwordHint:"At least 6 characters",
+enterEmail:"Please enter your email."
 },
-om: {
+om:{
 subtitle:"Waltajjii Tajaajila Gibiraa",
-signup:"Herrega Uumi", login:"Seeni",
-email:"Imeelii", password:"Jecha Darbii",
-register:"Galmaa'i", signIn:"Seeni", logout:"Ba'i",
-have:"Herrega qabdaa?", noAccount:"Herrega hin qabduu?",
-switchLogin:"Seeni", switchSignup:"Herrega uumi",
+signup:"Herrega Uumi",login:"Seeni",
+forgotTitle:"Jecha Darbii Deebisi",
+resetTitle:"Jecha Darbii Haaraa Qopheessi",
+email:"Imeelii",password:"Jecha Darbii",
+register:"Galmaa'i",signIn:"Seeni",
+sendReset:"Liinkii Deebisuu Ergi",
+savePassword:"Jecha Darbii Haaraa Olkaa'i",
+logout:"Ba'i",show:"Agarsiisi",hide:"Dhoksi",
+have:"Herrega qabdaa?",noAccount:"Herrega hin qabduu?",
+switchLogin:"Seeni",switchSignup:"Herrega uumi",
+forgot:"Jecha darbii dagatte?",
+home:"← Gara fuula jalqabaatti deebi'i",
 created:"Galmeen ergameera. Imeelii kee mirkaneessi.",
 logged:"Milkaa'inaan seenteetta.",
 loggedOut:"Baateetta.",
-error:"Dogoggora: ", session:"Seenteetta.",
-passwordHint:"Yoo xiqqaate qubee 6"
+resetSent:"Liinkiin deebisuu gara imeelii keetti ergameera.",
+passwordSaved:"Jechi darbii kee haaromfameera.",
+session:"Seenteetta.",
+error:"Dogoggora: ",
+passwordHint:"Yoo xiqqaate qubee 6",
+enterEmail:"Maaloo imeelii kee galchi."
 }
 };
 
-let mode = "signup";
-let lang = "am";
+let lang="am";
+let mode="signup";
+const $=id=>document.getElementById(id);
+const message=$("message");
 
-const $ = id => document.getElementById(id);
-const message = $("message");
-
-function showMessage(text, success=false) {
- message.textContent = text;
- message.style.display = "block";
- message.style.background = success ? "#dcfce7" : "#fee2e2";
- message.style.color = success ? "#166534" : "#991b1b";
+function showMessage(text,success=false){
+message.textContent=text;
+message.style.display="block";
+message.style.background=success?"#dcfce7":"#fee2e2";
+message.style.color=success?"#166534":"#991b1b";
 }
 
-function render() {
- const t = translations[lang];
- $("subtitle").textContent = t.subtitle;
- $("heading").textContent = mode === "signup" ? t.signup : t.login;
- $("emailLabel").textContent = t.email;
- $("passwordLabel").textContent = t.password;
- $("submitButton").textContent = mode === "signup" ? t.register : t.signIn;
- $("switchText").textContent = mode === "signup" ? t.have : t.noAccount;
- $("switchLink").textContent = mode === "signup" ? t.switchLogin : t.switchSignup;
- $("logoutButton").textContent = t.logout;
- $("password").placeholder = t.passwordHint;
+function render(){
+const t=translations[lang];
+$("subtitle").textContent=t.subtitle;
+$("emailLabel").textContent=t.email;
+$("passwordLabel").textContent=t.password;
+$("password").placeholder=t.passwordHint;
+$("togglePassword").textContent=$("password").type==="password"?t.show:t.hide;
+$("homeLink").textContent=t.home;
+$("logoutButton").textContent=t.logout;
+
+$("passwordArea").hidden=(mode==="forgot");
+$("forgotArea").hidden=(mode!=="login");
+$("switchArea").hidden=(mode==="forgot"||mode==="reset");
+
+if(mode==="signup"){
+$("heading").textContent=t.signup;
+$("submitButton").textContent=t.register;
+$("switchText").textContent=t.have;
+$("switchLink").textContent=t.switchLogin;
+$("password").required=true;
+$("password").autocomplete="new-password";
+}else if(mode==="login"){
+$("heading").textContent=t.login;
+$("submitButton").textContent=t.signIn;
+$("switchText").textContent=t.noAccount;
+$("switchLink").textContent=t.switchSignup;
+$("password").required=true;
+$("password").autocomplete="current-password";
+}else if(mode==="forgot"){
+$("heading").textContent=t.forgotTitle;
+$("submitButton").textContent=t.sendReset;
+$("password").required=false;
+}else if(mode==="reset"){
+$("heading").textContent=t.resetTitle;
+$("submitButton").textContent=t.savePassword;
+$("passwordArea").hidden=false;
+$("password").required=true;
+$("password").autocomplete="new-password";
+}
 }
 
-$("language").addEventListener("change", e => {
- lang = e.target.value;
- render();
+$("language").addEventListener("change",e=>{
+lang=e.target.value;
+render();
 });
 
-$("switchLink").addEventListener("click", () => {
- mode = mode === "signup" ? "login" : "signup";
- message.style.display = "none";
- $("password").value = "";
- render();
+$("togglePassword").addEventListener("click",()=>{
+$("password").type=$("password").type==="password"?"text":"password";
+render();
 });
 
-$("authForm").addEventListener("submit", async e => {
- e.preventDefault();
-
- const email = $("email").value.trim();
- const password = $("password").value;
- const button = $("submitButton");
- const t = translations[lang];
-
- button.disabled = true;
- message.style.display = "none";
-
- try {
-   if (mode === "signup") {
-     const { data, error } = await supabase.auth.signUp({
-       email,
-       password
-     });
-     if (error) throw error;
-
-     if (data.session) {
-       showMessage(t.created, true);
-     } else {
-       showMessage(t.created, true);
-     }
-   } else {
-     const { error } = await supabase.auth.signInWithPassword({
-       email,
-       password
-     });
-     if (error) throw error;
-
-     showMessage(t.logged, true);
-     $("logoutButton").hidden = false;
-   }
- } catch (error) {
-   showMessage(t.error + error.message);
- } finally {
-   button.disabled = false;
- }
+$("switchLink").addEventListener("click",e=>{
+e.preventDefault();
+mode=mode==="signup"?"login":"signup";
+$("password").value="";
+message.style.display="none";
+render();
 });
 
-$("logoutButton").addEventListener("click", async () => {
- const { error } = await supabase.auth.signOut();
- if (error) {
-   showMessage(translations[lang].error + error.message);
-   return;
- }
- $("logoutButton").hidden = true;
- showMessage(translations[lang].loggedOut, true);
+$("forgotLink").addEventListener("click",e=>{
+e.preventDefault();
+mode="forgot";
+$("password").value="";
+message.style.display="none";
+render();
 });
 
-async function checkSession() {
- const { data } = await supabase.auth.getSession();
- if (data.session) {
-   $("logoutButton").hidden = false;
-   showMessage(translations[lang].session, true);
- }
+$("authForm").addEventListener("submit",async e=>{
+e.preventDefault();
+const email=$("email").value.trim();
+const password=$("password").value;
+const button=$("submitButton");
+const t=translations[lang];
+
+button.disabled=true;
+message.style.display="none";
+
+try{
+if(mode==="signup"){
+const {data,error}=await supabase.auth.signUp({email,password});
+if(error)throw error;
+showMessage(t.created,true);
+
+}else if(mode==="login"){
+const {error}=await supabase.auth.signInWithPassword({email,password});
+if(error)throw error;
+showMessage(t.logged,true);
+$("logoutButton").hidden=false;
+
+}else if(mode==="forgot"){
+if(!email)throw new Error(t.enterEmail);
+const redirectTo=window.location.origin+
+"/ethio-tax-link/signup.html";
+
+const {error}=await supabase.auth.resetPasswordForEmail(email,{
+redirectTo
+});
+if(error)throw error;
+showMessage(t.resetSent,true);
+
+}else if(mode==="reset"){
+const {error}=await supabase.auth.updateUser({password});
+if(error)throw error;
+showMessage(t.passwordSaved,true);
+mode="login";
+$("password").value="";
+render();
+}
+}catch(error){
+showMessage(t.error+error.message);
+}finally{
+button.disabled=false;
+}
+});
+
+$("logoutButton").addEventListener("click",async()=>{
+const {error}=await supabase.auth.signOut();
+if(error){
+showMessage(translations[lang].error+error.message);
+return;
+}
+$("logoutButton").hidden=true;
+showMessage(translations[lang].loggedOut,true);
+});
+
+async function checkSession(){
+const {data}=await supabase.auth.getSession();
+if(data.session){
+$("logoutButton").hidden=false;
+showMessage(translations[lang].session,true);
+}
 }
 
-supabase.auth.onAuthStateChange((event, session) => {
- if (event === "SIGNED_IN" && session) {
-   $("logoutButton").hidden = false;
- }
- if (event === "SIGNED_OUT") {
-   $("logoutButton").hidden = true;
- }
+supabase.auth.onAuthStateChange((event,session)=>{
+if(event==="SIGNED_IN"&&session){
+$("logoutButton").hidden=false;
+}
+if(event==="SIGNED_OUT"){
+$("logoutButton").hidden=true;
+}
+if(event==="PASSWORD_RECOVERY"){
+mode="reset";
+render();
+showMessage(translations[lang].resetTitle,true);
+}
 });
 
 render();
