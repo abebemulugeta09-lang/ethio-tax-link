@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="am">
 <head>
@@ -5,85 +6,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ETHIO TAX LINK - Payments</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f6fa;
       margin: 0;
       padding: 20px;
-      color: #263238;
+      font-family: Arial, sans-serif;
+      background: #f2f5f8;
+      color: #1d2939;
     }
-    header {
-      background: #075b45;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      border-radius: 10px;
-    }
-    .card {
+    .container {
+      max-width: 750px;
+      margin: 25px auto;
+      padding: 25px;
       background: white;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px #00000012;
+      border-radius: 12px;
+      box-shadow: 0 3px 14px #00000012;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
+    h1 { color: #075b43; text-align: center; }
+    .summary {
+      background: #e9f5ef;
+      padding: 18px;
+      border-radius: 9px;
+      margin: 20px 0;
+      text-align: center;
     }
+    .amount { font-size: 28px; font-weight: bold; color: #075b43; }
+    table { width: 100%; border-collapse: collapse; margin-top: 18px; }
     th, td {
       padding: 12px 8px;
       border-bottom: 1px solid #ddd;
       text-align: left;
     }
-    th { background: #e7f1ed; }
-    .status { color: #087b43; font-weight: bold; }
-    a { color: #075b45; }
-    .notice { color: #a15b00; font-size: 14px; }
+    th { background: #eef3f1; }
+    .notice {
+      margin-top: 22px;
+      padding: 14px;
+      background: #fff4d6;
+      border-radius: 7px;
+      line-height: 1.6;
+    }
+    .home { display: block; margin-top: 20px; text-align: center; }
+    select { width: 100%; padding: 12px; border-radius: 7px; font-size: 16px; }
+    @media(max-width: 500px) {
+      .container { padding: 15px; }
+      th, td { font-size: 13px; padding: 9px 5px; }
+    }
   </style>
 </head>
 <body>
+  <main class="container">
+    <label id="languageLabel" for="language">ቋንቋ ይምረጡ</label>
+    <select id="language" onchange="changeLanguage()">
+      <option value="am">አማርኛ</option>
+      <option value="en">English</option>
+      <option value="om">Afaan Oromo</option>
+    </select>
 
-<header>
-  <h1>ETHIO TAX LINK</h1>
-  <h2>የክፍያ ታሪክ</h2>
-  <p>Payment History</p>
-</header>
+    <h1 id="title">የክፍያ መረጃ</h1>
+    <p id="intro">የግብር ክፍያ ታሪክና መዝገብ</p>
 
-<div class="card">
-  <h2>የክፍያ መረጃ</h2>
-  <p>ጠቅላላ የተከፈለ ገንዘብ፦ <strong>0 ETB</strong></p>
-  <p>የክፍያ ብዛት፦ <strong>0</strong></p>
-</div>
+    <section class="summary">
+      <p id="totalLabel">ጠቅላላ የተመዘገበ ክፍያ</p>
+      <div class="amount">0 ETB</div>
+      <p id="recordLabel">የክፍያ መዝገቦች፦ 0</p>
+    </section>
 
-<div class="card">
-  <h2>የክፍያ ዝርዝር</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ቀን</th>
-        <th>የክፍያ አይነት</th>
-        <th>መጠን</th>
-        <th>ሁኔታ</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td colspan="4">እስካሁን የተመዘገበ ክፍያ የለም።</td>
-      </tr>
-    </tbody>
-  </table>
-  <p class="notice">
-    ማሳሰቢያ፦ ይህ የሙከራ (Demo) ገጽ ነው።
-    እውነተኛ ክፍያ አያከናውንም።
-  </p>
-</div>
+    <h2 id="historyTitle">የክፍያ ታሪክ</h2>
 
-<div class="card">
-  <a href="dashboard.html">← ወደ Dashboard ተመለስ</a>
-  <br><br>
-  <a href="index.html">ወደ መነሻ ገጽ</a>
-</div>
+    <table>
+      <thead>
+        <tr>
+          <th id="dateHeading">ቀን</th>
+          <th id="referenceHeading">የክፍያ መለያ</th>
+          <th id="amountHeading">መጠን</th>
+          <th id="statusHeading">ሁኔታ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4" id="emptyMessage" style="text-align:center">
+            ምንም የክፍያ መዝገብ የለም።
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
+    <div class="notice" id="notice">
+      ማስታወሻ፦ ይህ የሙከራ ገጽ ነው።
+      ከባንኮች፣ Telebirr ወይም ከመንግሥት የክፍያ ስርዓት ጋር አልተገናኘም።
+      እዚህ ምንም እውነተኛ ክፍያ አልተፈጸመም።
+    </div>
+
+    <a class="home" id="homeLink" href="index.html">
+      ወደ መነሻ ገጽ ተመለስ
+    </a>
+  </main>
+
+  <script>
+    const translations = {
+      am: {
+        languageLabel: "ቋንቋ ይምረጡ",
+        title: "የክፍያ መረጃ",
+        intro: "የግብር ክፍያ ታሪክና መዝገብ",
+        totalLabel: "ጠቅላላ የተመዘገበ ክፍያ",
+        recordLabel: "የክፍያ መዝገቦች፦ 0",
+        historyTitle: "የክፍያ ታሪክ",
+        dateHeading: "ቀን",
+        referenceHeading: "የክፍያ መለያ",
+        amountHeading: "መጠን",
+        statusHeading: "ሁኔታ",
+        emptyMessage: "ምንም የክፍያ መዝገብ የለም።",
+        notice: "ማስታወሻ፦ ይህ የሙከራ ገጽ ነው። ከባንኮች፣ Telebirr ወይም ከመንግሥት የክፍያ ስርዓት ጋር አልተገናኘም። እዚህ ምንም እውነተኛ ክፍያ አልተፈጸመም።",
+        homeLink: "ወደ መነሻ ገጽ ተመለስ"
+      },
+      en: {
+        languageLabel: "Select Language",
+        title: "Payment Information",
+        intro: "Tax payment history and records",
+        totalLabel: "Total Recorded Payments",
+        recordLabel: "Payment Records: 0",
+        historyTitle: "Payment History",
+        dateHeading: "Date",
+        referenceHeading: "Payment Reference",
+        amountHeading: "Amount",
+        statusHeading: "Status",
+        emptyMessage: "No payment records available.",
+        notice: "Notice: This is a demo page. It is not connected to banks, Telebirr or government payment systems. No real payment has been made here.",
+        homeLink: "Return to Home"
+      },
+      om: {
+        languageLabel: "Afaan filadhu",
+        title: "Odeeffannoo Kaffaltii",
+        intro: "Seenaa fi galmee kaffaltii gibiraa",
+        totalLabel: "Waliigala Kaffaltii Galmaa'e",
+        recordLabel: "Galmee Kaffaltii: 0",
+        historyTitle: "Seenaa Kaffaltii",
+        dateHeading: "Guyyaa",
+        referenceHeading: "Lakkoofsa Kaffaltii",
+        amountHeading: "Hanga",
+        statusHeading: "Haala",
+        emptyMessage: "Galmeen kaffaltii hin jiru.",
+        notice: "Hubachiisa: Kun fuula yaalii dha. Baankii, Telebirr ykn sirna kaffaltii mootummaa waliin hin walqabanne. Kaffaltiin dhugaa as irratti hin raawwatamne.",
+        homeLink: "Gara fuula jalqabaatti deebi'i"
+      }
+    };
+
+    function changeLanguage() {
+      const lang = document.getElementById("language").value;
+      const t = translations[lang];
+      document.documentElement.lang = lang;
+
+      Object.keys(t).forEach(function(id) {
+        document.getElementById(id).textContent = t[id];
+      });
+    }
+  </script>
 </body>
 </html>
