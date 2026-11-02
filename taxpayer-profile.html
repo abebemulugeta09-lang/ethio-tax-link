@@ -12,8 +12,9 @@ h1{text-align:center;color:#126b45}
 label{display:block;margin-top:14px;font-weight:bold}
 input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:7px;box-sizing:border-box;font-size:16px}
 button{width:100%;padding:13px;margin-top:18px;background:#126b45;color:white;border:0;border-radius:8px;font-size:16px}
+button:disabled{opacity:.6}
 .notice{background:#fff5d8;padding:12px;border-radius:8px;font-size:14px}
-#result{margin-top:18px;padding:12px;background:#e8f5ed;border-radius:8px;display:none}
+#result{margin-top:18px;padding:12px;background:#e8f5ed;border-radius:8px;display:none;overflow-wrap:anywhere}
 a{color:#126b45}
 </style>
 </head>
@@ -42,30 +43,30 @@ a{color:#126b45}
 <option value="business" id="businessOption">ድርጅት</option>
 </select>
 
-<label id="nameLabel">ሙሉ ስም</label>
-<input id="fullName" type="text" placeholder="ሙሉ ስም አስገባ" required>
+<label id="nameLabel">ሙሉ ስም / የድርጅት ስም</label>
+<input id="fullName" type="text" required>
 
 <label id="tinLabel">የTIN ቁጥር</label>
-<input id="tin" type="text" placeholder="የTIN ቁጥር አስገባ">
+<input id="tin" type="text">
 
 <div id="licenseSection" style="display:none">
 <label id="licenseLabel">የንግድ ፈቃድ ቁጥር</label>
-<input id="license" type="text" placeholder="የንግድ ፈቃድ ቁጥር">
+<input id="license" type="text">
 </div>
 
 <label id="emailLabel">ኢሜይል</label>
-<input id="email" type="email" placeholder="example@email.com">
+<input id="email" type="email" readonly>
 
 <label id="phoneLabel">ስልክ ቁጥር</label>
-<input id="phone" type="tel" placeholder="09XXXXXXXX">
+<input id="phone" type="tel">
 
 <label id="cityLabel">ከተማ</label>
-<input id="city" type="text" placeholder="አዲስ አበባ">
+<input id="city" type="text">
 
 <button type="submit" id="saveButton">መረጃውን አስቀምጥ</button>
 </form>
 
-<div id="result"></div>
+<div id="result" role="status"></div>
 
 <p><a href="dashboard.html" id="dashboardLink">ወደ Dashboard ተመለስ</a></p>
 <p><a href="index.html" id="homeLink">ዋና ገጽ</a></p>
@@ -90,7 +91,9 @@ cityLabel:"ከተማ",
 saveButton:"መረጃውን አስቀምጥ",
 dashboardLink:"ወደ Dashboard ተመለስ",
 homeLink:"ዋና ገጽ",
-success:"የሙከራ መረጃው ተቀብሏል። በቋሚነት አልተቀመጠም።"
+success:"መረጃው በSupabase Database ተቀምጧል።",
+error:"መረጃውን ማስቀመጥ አልተቻለም።",
+loading:"መረጃ በመጫን ላይ..."
 },
 en:{
 title:"Taxpayer Profile",
@@ -105,10 +108,12 @@ licenseLabel:"Business License Number",
 emailLabel:"Email",
 phoneLabel:"Phone Number",
 cityLabel:"City",
-saveButton:"Submit Demo Profile",
+saveButton:"Save Profile",
 dashboardLink:"Back to Dashboard",
 homeLink:"Home",
-success:"Demo information received. It has not been permanently saved."
+success:"Profile saved to Supabase Database.",
+error:"Could not save the profile.",
+loading:"Loading profile..."
 },
 om:{
 title:"Odeeffannoo Kaffalaa Gibiraa",
@@ -123,10 +128,12 @@ licenseLabel:"Lakkoofsa Hayyama Daldalaa",
 emailLabel:"Imeelii",
 phoneLabel:"Lakkoofsa Bilbilaa",
 cityLabel:"Magaalaa",
-saveButton:"Odeeffannoo Ergi",
+saveButton:"Odeeffannoo Kuusi",
 dashboardLink:"Gara Dashboard Deebi'i",
 homeLink:"Fuula Jalqabaa",
-success:"Odeeffannoon yaalii fudhatameera. Dhaabbataadhaan hin kuufamne."
+success:"Odeeffannoon Supabase Database keessatti kuufameera.",
+error:"Odeeffannoo kuusuu hin dandeenye.",
+loading:"Odeeffannoo fe'aa jira..."
 }
 };
 
@@ -136,9 +143,7 @@ const t=translations[language];
 
 Object.keys(t).forEach(id=>{
 const element=document.getElementById(id);
-if(element){
-element.textContent=t[id];
-}
+if(element) element.textContent=t[id];
 });
 
 changeTaxpayerType();
@@ -146,32 +151,136 @@ changeTaxpayerType();
 
 function changeTaxpayerType(){
 const type=document.getElementById("type").value;
-const language=document.getElementById("language").value;
-const t=translations[language];
-
 const licenseSection=document.getElementById("licenseSection");
-const nameLabel=document.getElementById("nameLabel");
+const license=document.getElementById("license");
 
 if(type==="business"){
 licenseSection.style.display="block";
-document.getElementById("license").required=true;
+license.required=true;
 }else{
 licenseSection.style.display="none";
-document.getElementById("license").required=false;
+license.required=false;
+license.value="";
+}
+}
+</script>
+
+<script type="module">
+import { supabase } from "./supabase-config.js";
+
+const form=document.getElementById("profileForm");
+const result=document.getElementById("result");
+const saveButton=document.getElementById("saveButton");
+
+let currentUser=null;
+
+function showMessage(message,isError=false){
+result.textContent=message;
+result.style.display="block";
+result.style.background=isError?"#fde8e8":"#e8f5ed";
 }
 
-nameLabel.textContent=t.nameLabel;
+async function initializeProfile(){
+try{
+const {data,error}=await supabase.auth.getSession();
+
+if(error || !data.session){
+window.location.replace("signup.html");
+return;
 }
 
-document.getElementById("profileForm").addEventListener("submit",function(e){
-e.preventDefault();
+currentUser=data.session.user;
+document.getElementById("email").value=currentUser.email || "";
+
+const {data:profile,error:profileError}=await supabase
+.from("taxpayers")
+.select("*")
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+if(profileError){
+throw profileError;
+}
+
+if(profile){
+document.getElementById("type").value=profile.taxpayer_type || "individual";
+document.getElementById("fullName").value=profile.full_name || "";
+document.getElementById("tin").value=profile.tin || "";
+document.getElementById("license").value=profile.business_license || "";
+document.getElementById("phone").value=profile.phone || "";
+document.getElementById("city").value=profile.city || "";
+}
+
+changeTaxpayerType();
+
+}catch(error){
+console.error(error);
+showMessage("Profile loading error: "+error.message,true);
+}
+}
+
+form.addEventListener("submit",async function(event){
+event.preventDefault();
+
+if(!currentUser){
+showMessage("እባክዎ Login ያድርጉ።",true);
+return;
+}
+
+saveButton.disabled=true;
+saveButton.textContent="Saving...";
+
+const profileData={
+user_id:currentUser.id,
+taxpayer_type:document.getElementById("type").value,
+full_name:document.getElementById("fullName").value.trim(),
+tin:document.getElementById("tin").value.trim() || null,
+business_license:document.getElementById("type").value==="business"
+? document.getElementById("license").value.trim() || null
+: null,
+email:currentUser.email || null,
+phone:document.getElementById("phone").value.trim() || null,
+city:document.getElementById("city").value.trim() || null
+};
+
+try{
+const {data:existing,error:checkError}=await supabase
+.from("taxpayers")
+.select("id")
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+if(checkError) throw checkError;
+
+let saveResult;
+
+if(existing){
+saveResult=await supabase
+.from("taxpayers")
+.update(profileData)
+.eq("user_id",currentUser.id);
+}else{
+saveResult=await supabase
+.from("taxpayers")
+.insert(profileData);
+}
+
+if(saveResult.error) throw saveResult.error;
 
 const language=document.getElementById("language").value;
-const result=document.getElementById("result");
+showMessage(translations[language].success);
 
-result.textContent=translations[language].success;
-result.style.display="block";
+}catch(error){
+console.error(error);
+showMessage("Save error: "+error.message,true);
+}finally{
+saveButton.disabled=false;
+const language=document.getElementById("language").value;
+saveButton.textContent=translations[language].saveButton;
+}
 });
+
+initializeProfile();
 </script>
 
 </body>
