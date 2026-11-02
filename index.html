@@ -184,8 +184,42 @@ function changeLanguage() {
   ];
 
   ids.forEach((id, index) => {
-    document.getElementById(id).textContent =
-      translations[lang][index];
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = translations[lang][index];
+    }
+  });
+
+  const linkTexts = {
+    am: [
+      "ለመመዝገብ እዚህ ይጫኑ",
+      "ወደ Dashboard ይግቡ",
+      "የግብር ግምት ለማየት ይጫኑ",
+      "የክፍያ መረጃ ለማየት ይጫኑ",
+      "ሰነዶቼን ለማየት ይጫኑ"
+    ],
+    en: [
+      "Click here to register",
+      "Open Dashboard",
+      "View Tax Estimate",
+      "View Payment Information",
+      "View My Documents"
+    ],
+    om: [
+      "Galmaa'uuf as tuqi",
+      "Dashboard bani",
+      "Tilmaama Gibiraa ilaali",
+      "Odeeffannoo Kaffaltii ilaali",
+      "Sanadoota Koo ilaali"
+    ]
+  };
+
+  const links = document.querySelectorAll(".grid .card a");
+
+  links.forEach((link, index) => {
+    if (linkTexts[lang][index]) {
+      link.textContent = linkTexts[lang][index];
+    }
   });
 }
 </script>
