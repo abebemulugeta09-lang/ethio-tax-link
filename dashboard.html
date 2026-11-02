@@ -77,6 +77,15 @@ select {
   padding: 9px;
   border-radius: 7px;
 }
+#logout {
+  background: #a52d2d;
+  color: white;
+  border: 0;
+  padding: 10px 16px;
+  border-radius: 7px;
+  margin-left: 10px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -90,8 +99,8 @@ select {
   <a href="index.html" id="home">ዋና ገጽ</a>
   <a href="taxpayer-profile.html" id="register">የታክስ ከፋይ መገለጫ</a>
   <a href="tax-estimate.html" id="estimate">የግብር ግምት</a>
-<a href="payments.html" id="paymentLink">ክፍያዎች</a>
-<a href="documents.html" id="documentLink">ሰነዶች</a>
+  <a href="payments.html" id="paymentLink">ክፍያዎች</a>
+  <a href="documents.html" id="documentLink">ሰነዶች</a>
 </nav>
 
 <main>
@@ -104,6 +113,8 @@ select {
       <option value="om">Afaan Oromo</option>
     </select>
 
+    <button id="logout" type="button">ውጣ</button>
+
     <h2 id="welcome">እንኳን ወደ ዳሽቦርድ በደህና መጡ</h2>
     <p id="intro">የታክስ አገልግሎቶችዎን እዚህ ይከታተሉ።</p>
   </section>
@@ -113,7 +124,7 @@ select {
     <div class="card">
       <h3 id="profile">የታክስ ከፋይ መገለጫ</h3>
       <p id="profileText">የምዝገባ መረጃዎን ይመልከቱ።</p>
-      <a class="action" href="registration.html" id="profileButton">መመዝገብ</a>
+      <a class="action" href="taxpayer-profile.html" id="profileButton">መገለጫ ክፈት</a>
     </div>
 
     <div class="card">
@@ -128,24 +139,17 @@ select {
       <a class="action" href="tax-estimate.html" id="calculatorButton">ማስሊያ ክፈት</a>
     </div>
 
-    <div class="card" id="payments">
+    <div class="card">
       <h3 id="paymentsTitle">የክፍያ ታሪክ</h3>
       <div class="value">0 ETB</div>
-      <p>
-  <a href="payments.html" id="paymentsButton">የክፍያ ታሪክ ለማየት እዚህ ይጫኑ</a>
-</p>
+      <p><a href="payments.html" id="paymentsButton">የክፍያ ታሪክ ለማየት እዚህ ይጫኑ</a></p>
     </div>
-<div class="card" id="documents">
-  <h3 id="documentsTitle">ሰነዶች</h3>
-  <p id="documentsText">የታክስ ሰነዶች እዚህ ይታያሉ።</p>
 
-  <p>
-    <a href="documents.html">
-      ሰነዶቼን እና QR ደረሰኞቼን ለማየት እዚህ ይጫኑ
-    </a>
-  </p>
-</div>
-    
+    <div class="card">
+      <h3 id="documentsTitle">ሰነዶች</h3>
+      <p id="documentsText">የታክስ ሰነዶች እዚህ ይታያሉ።</p>
+      <p><a href="documents.html" id="documentsButton">ሰነዶቼን እና QR ደረሰኞቼን ለማየት እዚህ ይጫኑ</a></p>
+    </div>
 
     <div class="card">
       <h3 id="notifications">ማሳወቂያዎች</h3>
@@ -168,69 +172,75 @@ select {
 const translations = {
 am: {
 subtitle:"የታክስ ከፋይ ዳሽቦርድ",
-home:"ዋና ገጽ",register:"ምዝገባ",
+home:"ዋና ገጽ",register:"የታክስ ከፋይ መገለጫ",
 estimate:"የግብር ግምት",paymentLink:"ክፍያዎች",
 documentLink:"ሰነዶች",languageLabel:"ቋንቋ ምረጥ",
+logout:"ውጣ",
 welcome:"እንኳን ወደ ዳሽቦርድ በደህና መጡ",
 intro:"የታክስ አገልግሎቶችዎን እዚህ ይከታተሉ።",
 profile:"የታክስ ከፋይ መገለጫ",
 profileText:"የምዝገባ መረጃዎን ይመልከቱ።",
-profileButton:"መመዝገብ",
+profileButton:"መገለጫ ክፈት",
 taxStatus:"የግብር ሁኔታ",
 taxStatusText:"የሙከራ ሁኔታ፤ እውነተኛ የታክስ መረጃ አይደለም።",
 calculator:"የግብር ግምት",
 calculatorText:"የሙከራ ግምት ማስላት።",
 calculatorButton:"ማስሊያ ክፈት",
 paymentsTitle:"የክፍያ ታሪክ",
-paymentsText:"እስካሁን የሙከራ ክፍያ አልተመዘገበም።",
+paymentsButton:"የክፍያ ታሪክ ለማየት እዚህ ይጫኑ",
 documentsTitle:"ሰነዶች",
 documentsText:"የታክስ ሰነዶች እዚህ ይታያሉ።",
+documentsButton:"ሰነዶቼን እና QR ደረሰኞቼን ለማየት እዚህ ይጫኑ",
 notifications:"ማሳወቂያዎች",
 notificationsText:"አዲስ ማሳወቂያ የለም።",
 notice:"ማስታወሻ፦ ይህ የሙከራ Dashboard ነው። እውነተኛ የታክስ መዝገብ፣ ክፍያ፣ Fayda ወይም የመንግሥት ስርዓት ግንኙነት ገና የለውም።"
 },
 en: {
 subtitle:"Taxpayer Dashboard",
-home:"Home",register:"Registration",
+home:"Home",register:"Taxpayer Profile",
 estimate:"Tax Estimate",paymentLink:"Payments",
 documentLink:"Documents",languageLabel:"Select Language",
+logout:"Logout",
 welcome:"Welcome to your Dashboard",
 intro:"Track your tax services here.",
 profile:"Taxpayer Profile",
 profileText:"View your registration information.",
-profileButton:"Register",
+profileButton:"Open Profile",
 taxStatus:"Tax Status",
 taxStatusText:"Demo status; not real tax information.",
 calculator:"Tax Estimate",
 calculatorText:"Calculate a demo estimate.",
 calculatorButton:"Open Calculator",
 paymentsTitle:"Payment History",
-paymentsText:"No demo payments recorded yet.",
+paymentsButton:"Click here to view payment history",
 documentsTitle:"Documents",
 documentsText:"Your tax documents will appear here.",
+documentsButton:"Click here to view documents and QR receipts",
 notifications:"Notifications",
 notificationsText:"No new notifications.",
 notice:"Notice: This is a demo Dashboard. It has no real tax records, payments, Fayda or government system connection."
 },
 om: {
 subtitle:"Daashboordii Kaffalaa Gibiraa",
-home:"Fuula Jalqabaa",register:"Galmee",
+home:"Fuula Jalqabaa",register:"Odeeffannoo Kaffalaa Gibiraa",
 estimate:"Tilmaama Gibiraa",paymentLink:"Kaffaltii",
 documentLink:"Sanadoota",languageLabel:"Afaan Filadhu",
+logout:"Ba'i",
 welcome:"Baga gara Daashboordii dhuftan",
 intro:"Tajaajila gibiraa keessan asitti hordofaa.",
 profile:"Odeeffannoo Kaffalaa Gibiraa",
 profileText:"Odeeffannoo galmee keessanii ilaalaa.",
-profileButton:"Galmaa'i",
+profileButton:"Odeeffannoo Bani",
 taxStatus:"Haala Gibiraa",
 taxStatusText:"Haala yaalii qofa; odeeffannoo gibiraa dhugaa miti.",
 calculator:"Tilmaama Gibiraa",
 calculatorText:"Tilmaama yaalii herregi.",
 calculatorButton:"Herrega Bani",
 paymentsTitle:"Seenaa Kaffaltii",
-paymentsText:"Kaffaltiin yaalii hanga ammaatti hin galmoofne.",
+paymentsButton:"Seenaa kaffaltii ilaaluuf as tuqi",
 documentsTitle:"Sanadoota",
 documentsText:"Sanadoonni gibiraa keessan asitti mul'atu.",
+documentsButton:"Sanadootaa fi nagahee QR ilaaluuf as tuqi",
 notifications:"Beeksisa",
 notificationsText:"Beeksisni haaraan hin jiru.",
 notice:"Hubachiisa: Kun Daashboordii yaalii qofa. Galmee gibiraa dhugaa, kaffaltii, Fayda ykn sirna mootummaa waliin walqabsiisa hin qabu."
@@ -246,6 +256,42 @@ function changeLanguage() {
     if (element) element.textContent = t[id];
   });
 }
+</script>
+
+<script type="module">
+import { supabase } from "./supabase-config.js";
+
+const logoutButton = document.getElementById("logout");
+
+async function checkLogin() {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.replace("signup.html");
+      return;
+    }
+  } catch (error) {
+    alert("Login ማረጋገጥ አልተቻለም። እባክዎ እንደገና ይሞክሩ።");
+    window.location.replace("signup.html");
+  }
+}
+
+logoutButton.addEventListener("click", async () => {
+  logoutButton.disabled = true;
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    alert("Logout አልተሳካም፦ " + error.message);
+    logoutButton.disabled = false;
+    return;
+  }
+
+  window.location.replace("signup.html");
+});
+
+checkLogin();
 </script>
 
 </body>
