@@ -16,6 +16,7 @@ button:disabled{opacity:.6}
 .notice{background:#fff5d8;padding:12px;border-radius:8px;font-size:14px}
 #result{margin-top:18px;padding:12px;background:#e8f5ed;border-radius:8px;display:none;overflow-wrap:anywhere}
 a{color:#126b45}
+.section-title{margin-top:25px;color:#126b45;border-bottom:1px solid #ddd;padding-bottom:8px}
 </style>
 </head>
 <body>
@@ -37,10 +38,24 @@ a{color:#126b45}
 
 <form id="profileForm">
 
+<h3 class="section-title" id="basicTitle">መሠረታዊ መረጃ</h3>
+
 <label id="typeLabel">የታክስ ከፋይ ዓይነት</label>
 <select id="type" required onchange="changeTaxpayerType()">
 <option value="individual" id="individualOption">ግለሰብ</option>
 <option value="business" id="businessOption">ድርጅት</option>
+</select>
+
+<label id="categoryLabel">የታክስ ከፋይ ምድብ</label>
+<select id="category" required>
+<option value="">-- ምረጥ --</option>
+<option value="individual">ግለሰብ</option>
+<option value="merchant">ነጋዴ</option>
+<option value="small_business">አነስተኛ ንግድ</option>
+<option value="private_company">የግል ድርጅት</option>
+<option value="share_company">አክሲዮን ማህበር</option>
+<option value="transport_business">የትራንስፖርት ድርጅት</option>
+<option value="other">ሌላ</option>
 </select>
 
 <label id="nameLabel">ሙሉ ስም / የድርጅት ስም</label>
@@ -54,6 +69,23 @@ a{color:#126b45}
 <input id="license" type="text">
 </div>
 
+<h3 class="section-title" id="businessTitle">የኢኮኖሚ ዘርፍ</h3>
+
+<label id="sectorLabel">የንግድ / የሥራ ዘርፍ</label>
+<select id="sector">
+<option value="">-- ምረጥ --</option>
+<option value="agriculture">ግብርና</option>
+<option value="transport">ትራንስፖርት</option>
+<option value="industry">ኢንዱስትሪ</option>
+<option value="trade">ንግድ</option>
+<option value="services">አገልግሎት</option>
+<option value="construction">ግንባታ</option>
+<option value="technology">ቴክኖሎጂ</option>
+<option value="other">ሌላ</option>
+</select>
+
+<h3 class="section-title" id="contactTitle">የመገናኛ መረጃ</h3>
+
 <label id="emailLabel">ኢሜይል</label>
 <input id="email" type="email" readonly>
 
@@ -62,6 +94,17 @@ a{color:#126b45}
 
 <label id="cityLabel">ከተማ</label>
 <input id="city" type="text">
+
+<h3 class="section-title" id="registrationTitle">የምዝገባ መረጃ</h3>
+
+<label id="methodLabel">የምዝገባ ዘዴ</label>
+<select id="registrationMethod" disabled>
+<option value="self">ራስ-ምዝገባ</option>
+</select>
+
+<p class="notice" id="methodNotice">
+ይህ መገለጫ በራስዎ እየተመዘገበ ነው። በባለሙያ የሚደረግ ምዝገባ በተለየ የፈቃድ ስርዓት ይተዳደራል።
+</p>
 
 <button type="submit" id="saveButton">መረጃውን አስቀምጥ</button>
 </form>
@@ -79,63 +122,109 @@ am:{
 title:"የታክስ ከፋይ መገለጫ",
 languageLabel:"ቋንቋ ምረጥ",
 notice:"ማሳሰቢያ፦ ይህ የሙከራ ገጽ ነው። እውነተኛ TIN ወይም Fayda መረጃ አታስገቡ።",
+basicTitle:"መሠረታዊ መረጃ",
 typeLabel:"የታክስ ከፋይ ዓይነት",
 individualOption:"ግለሰብ",
 businessOption:"ድርጅት",
+categoryLabel:"የታክስ ከፋይ ምድብ",
 nameLabel:"ሙሉ ስም / የድርጅት ስም",
 tinLabel:"የTIN ቁጥር",
 licenseLabel:"የንግድ ፈቃድ ቁጥር",
+businessTitle:"የኢኮኖሚ ዘርፍ",
+sectorLabel:"የንግድ / የሥራ ዘርፍ",
+contactTitle:"የመገናኛ መረጃ",
 emailLabel:"ኢሜይል",
 phoneLabel:"ስልክ ቁጥር",
 cityLabel:"ከተማ",
+registrationTitle:"የምዝገባ መረጃ",
+methodLabel:"የምዝገባ ዘዴ",
+methodNotice:"ይህ መገለጫ በራስዎ እየተመዘገበ ነው። በባለሙያ የሚደረግ ምዝገባ በተለየ የፈቃድ ስርዓት ይተዳደራል።",
 saveButton:"መረጃውን አስቀምጥ",
 dashboardLink:"ወደ Dashboard ተመለስ",
 homeLink:"ዋና ገጽ",
 success:"መረጃው በSupabase Database ተቀምጧል።",
 error:"መረጃውን ማስቀመጥ አልተቻለም።",
-loading:"መረጃ በመጫን ላይ..."
+loading:"መረጃ በመጫን ላይ...",
+categoryOptions:["-- ምረጥ --","ግለሰብ","ነጋዴ","አነስተኛ ንግድ","የግል ድርጅት","አክሲዮን ማህበር","የትራንስፖርት ድርጅት","ሌላ"],
+sectorOptions:["-- ምረጥ --","ግብርና","ትራንስፖርት","ኢንዱስትሪ","ንግድ","አገልግሎት","ግንባታ","ቴክኖሎጂ","ሌላ"]
 },
 en:{
 title:"Taxpayer Profile",
 languageLabel:"Select Language",
 notice:"Demo page only. Do not enter real TIN or Fayda information.",
+basicTitle:"Basic Information",
 typeLabel:"Taxpayer Type",
 individualOption:"Individual",
 businessOption:"Business / Company",
+categoryLabel:"Taxpayer Category",
 nameLabel:"Full Name / Business Name",
 tinLabel:"TIN Number",
 licenseLabel:"Business License Number",
+businessTitle:"Economic Sector",
+sectorLabel:"Business / Work Sector",
+contactTitle:"Contact Information",
 emailLabel:"Email",
 phoneLabel:"Phone Number",
 cityLabel:"City",
+registrationTitle:"Registration Information",
+methodLabel:"Registration Method",
+methodNotice:"This profile is being registered by the taxpayer. Professional-assisted registration will be managed through a separate authorized system.",
 saveButton:"Save Profile",
 dashboardLink:"Back to Dashboard",
 homeLink:"Home",
 success:"Profile saved to Supabase Database.",
 error:"Could not save the profile.",
-loading:"Loading profile..."
+loading:"Loading profile...",
+categoryOptions:["-- Select --","Individual","Merchant","Small Business","Private Company","Share Company","Transport Business","Other"],
+sectorOptions:["-- Select --","Agriculture","Transport","Industry","Trade","Services","Construction","Technology","Other"]
 },
 om:{
 title:"Odeeffannoo Kaffalaa Gibiraa",
 languageLabel:"Afaan Filadhu",
 notice:"Kun fuula yaalii qofa. TIN ykn odeeffannoo Fayda dhugaa hin galchinaa.",
+basicTitle:"Odeeffannoo Bu'uuraa",
 typeLabel:"Gosa Kaffalaa Gibiraa",
 individualOption:"Nama dhuunfaa",
 businessOption:"Dhaabbata",
+categoryLabel:"Ramaddii Kaffalaa Gibiraa",
 nameLabel:"Maqaa Guutuu / Maqaa Dhaabbataa",
 tinLabel:"Lakkoofsa TIN",
 licenseLabel:"Lakkoofsa Hayyama Daldalaa",
+businessTitle:"Damee Dinagdee",
+sectorLabel:"Damee Daldalaa / Hojii",
+contactTitle:"Odeeffannoo Quunnamtii",
 emailLabel:"Imeelii",
 phoneLabel:"Lakkoofsa Bilbilaa",
 cityLabel:"Magaalaa",
+registrationTitle:"Odeeffannoo Galmee",
+methodLabel:"Mala Galmee",
+methodNotice:"Odeeffannoon kun ofiin galmaa'aa jira. Galmeen ogeessaan taasifamu karaa sirna hayyamame addaa ni bulfama.",
 saveButton:"Odeeffannoo Kuusi",
 dashboardLink:"Gara Dashboard Deebi'i",
 homeLink:"Fuula Jalqabaa",
 success:"Odeeffannoon Supabase Database keessatti kuufameera.",
 error:"Odeeffannoo kuusuu hin dandeenye.",
-loading:"Odeeffannoo fe'aa jira..."
+loading:"Odeeffannoo fe'aa jira...",
+categoryOptions:["-- Filadhu --","Nama dhuunfaa","Daldalaa","Daldala xixiqqaa","Dhaabbata dhuunfaa","Dhaabbata aksiyoonaa","Dhaabbata geejjibaa","Kan biraa"],
+sectorOptions:["-- Filadhu --","Qonna","Geejjiba","Industirii","Daldala","Tajaajila","Ijaarsaa","Teeknooloojii","Kan biraa"]
 }
 };
+
+const categoryValues=["","individual","merchant","small_business","private_company","share_company","transport_business","other"];
+const sectorValues=["","agriculture","transport","industry","trade","services","construction","technology","other"];
+
+function setOptions(id,labels,values){
+const select=document.getElementById(id);
+const oldValue=select.value;
+select.innerHTML="";
+labels.forEach((label,index)=>{
+const option=document.createElement("option");
+option.value=values[index];
+option.textContent=label;
+select.appendChild(option);
+});
+if(values.includes(oldValue)) select.value=oldValue;
+}
 
 function changeLanguage(){
 const language=document.getElementById("language").value;
@@ -143,9 +232,11 @@ const t=translations[language];
 
 Object.keys(t).forEach(id=>{
 const element=document.getElementById(id);
-if(element) element.textContent=t[id];
+if(element && typeof t[id]==="string") element.textContent=t[id];
 });
 
+setOptions("category",t.categoryOptions,categoryValues);
+setOptions("sector",t.sectorOptions,sectorValues);
 changeTaxpayerType();
 }
 
@@ -198,9 +289,7 @@ const {data:profile,error:profileError}=await supabase
 .eq("user_id",currentUser.id)
 .maybeSingle();
 
-if(profileError){
-throw profileError;
-}
+if(profileError) throw profileError;
 
 if(profile){
 document.getElementById("type").value=profile.taxpayer_type || "individual";
@@ -209,6 +298,9 @@ document.getElementById("tin").value=profile.tin || "";
 document.getElementById("license").value=profile.business_license || "";
 document.getElementById("phone").value=profile.phone || "";
 document.getElementById("city").value=profile.city || "";
+document.getElementById("category").value=profile.taxpayer_category || "";
+document.getElementById("sector").value=profile.business_sector || "";
+document.getElementById("registrationMethod").value=profile.registration_method || "self";
 }
 
 changeTaxpayerType();
@@ -223,16 +315,20 @@ form.addEventListener("submit",async function(event){
 event.preventDefault();
 
 if(!currentUser){
-showMessage("እባክዎ Login ያድርጉ።",true);
+showMessage("Please log in first.",true);
 return;
 }
 
 saveButton.disabled=true;
-saveButton.textContent="Saving...";
+const language=document.getElementById("language").value;
+saveButton.textContent=translations[language].loading;
 
 const profileData={
 user_id:currentUser.id,
 taxpayer_type:document.getElementById("type").value,
+taxpayer_category:document.getElementById("category").value || null,
+business_sector:document.getElementById("sector").value || null,
+registration_method:"self",
 full_name:document.getElementById("fullName").value.trim(),
 tin:document.getElementById("tin").value.trim() || null,
 business_license:document.getElementById("type").value==="business"
@@ -267,16 +363,14 @@ saveResult=await supabase
 
 if(saveResult.error) throw saveResult.error;
 
-const language=document.getElementById("language").value;
 showMessage(translations[language].success);
 
 }catch(error){
 console.error(error);
-showMessage("Save error: "+error.message,true);
+showMessage(translations[language].error+" "+error.message,true);
 }finally{
 saveButton.disabled=false;
-const language=document.getElementById("language").value;
-saveButton.textContent=translations[language].saveButton;
+saveButton.textContent=translations[document.getElementById("language").value].saveButton;
 }
 });
 
