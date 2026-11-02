@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETHIO TAX LINK - Taxpayer Profile</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f2f5f9;margin:0;padding:20px;color:#172b4d}
+.container{max-width:650px;margin:20px auto;background:white;padding:22px;border-radius:14px;box-shadow:0 3px 15px #0001}
+h1{text-align:center;color:#126b45}
+label{display:block;margin-top:14px;font-weight:bold}
+input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:7px;box-sizing:border-box;font-size:16px}
+button{width:100%;padding:13px;margin-top:18px;background:#126b45;color:white;border:0;border-radius:8px;font-size:16px}
+.notice{background:#fff5d8;padding:12px;border-radius:8px;font-size:14px}
+#result{margin-top:18px;padding:12px;background:#e8f5ed;border-radius:8px;display:none}
+a{color:#126b45}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>ETHIO TAX LINK</h1>
+<h2 id="title">የታክስ ከፋይ መገለጫ</h2>
+
+<label id="languageLabel">ቋንቋ ምረጥ</label>
+<select id="language" onchange="changeLanguage()">
+<option value="am">አማርኛ</option>
+<option value="en">English</option>
+<option value="om">Afaan Oromo</option>
+</select>
+
+<p class="notice" id="notice">ማሳሰቢያ፦ ይህ የሙከራ ገጽ ነው። እውነተኛ TIN ወይም Fayda መረጃ አታስገቡ።</p>
+
+<form id="profileForm">
+<label id="typeLabel">የታክስ ከፋይ ዓይነት</label>
+<select id="type" required>
+<option value="individual" id="individualOption">ግለሰብ</option>
+<option value="business" id="businessOption">ድርጅት</option>
+</select>
+
+<label id="nameLabel">ሙሉ ስም / የድርጅት ስም</label>
+<input id="fullName" type="text" placeholder="ምሳሌ፦ አበበ ሙሉጌታ" required>
+
+<label id="emailLabel">ኢሜይል</label>
+<input id="email" type="email" placeholder="example@email.com">
+
+<label id="phoneLabel">ስልክ ቁጥር</label>
+<input id="phone" type="tel" placeholder="09XXXXXXXX">
+
+<label id="cityLabel">ከተማ</label>
+<input id="city" type="text" placeholder="ምሳሌ፦ አዲስ አበባ">
+
+<button type="submit" id="saveButton">መረጃውን አስቀምጥ</button>
+</form>
+
+<div id="result"></div>
+<p><a href="dashboard.html" id="dashboardLink">ወደ Dashboard ተመለስ</a></p>
+<p><a href="index.html" id="homeLink">ዋና ገጽ</a></p>
+</div>
+
+<script>
+const translations={
+am:{
+title:"የታክስ ከፋይ መገለጫ",
+languageLabel:"ቋንቋ ምረጥ",
+notice:"ማሳሰቢያ፦ ይህ የሙከራ ገጽ ነው። እውነተኛ TIN ወይም Fayda መረጃ አታስገቡ።",
+typeLabel:"የታክስ ከፋይ ዓይነት",
+individualOption:"ግለሰብ",businessOption:"ድርጅት",
+nameLabel:"ሙሉ ስም / የድርጅት ስም",
+emailLabel:"ኢሜይል",phoneLabel:"ስልክ ቁጥር",
+cityLabel:"ከተማ",saveButton:"መረጃውን አስቀምጥ",
+dashboardLink:"ወደ Dashboard ተመለስ",homeLink:"ዋና ገጽ",
+success:"የሙከራ መረጃው ተቀብሏል። በዚህ ስሪት በቋሚነት አልተቀመጠም።"
+},
+en:{
+title:"Taxpayer Profile",languageLabel:"Select Language",
+notice:"Notice: This is a demo page. Do not enter real TIN or Fayda information.",
+typeLabel:"Taxpayer Type",individualOption:"Individual",
+businessOption:"Business / Company",nameLabel:"Full Name / Business Name",
+emailLabel:"Email",phoneLabel:"Phone Number",cityLabel:"City",
+saveButton:"Submit Demo Profile",dashboardLink:"Back to Dashboard",
+homeLink:"Home",success:"Demo information received. It has not been permanently saved."
+},
+om:{
+title:"Odeeffannoo Kaffalaa Gibiraa",languageLabel:"Afaan Filadhu",
+notice:"Hubachiisa: Kun fuula yaalii qofa. TIN ykn odeeffannoo Fayda dhugaa hin galchinaa.",
+typeLabel:"Gosa Kaffalaa Gibiraa",individualOption:"Nama dhuunfaa",
+businessOption:"Dhaabbata",nameLabel:"Maqaa Guutuu / Maqaa Dhaabbataa",
+emailLabel:"Imeelii",phoneLabel:"Lakkoofsa Bilbilaa",
+cityLabel:"Magaalaa",saveButton:"Odeeffannoo Ergi",
+dashboardLink:"Gara Dashboard Deebi'i",homeLink:"Fuula Jalqabaa",
+success:"Odeeffannoon yaalii fudhatameera. Dhaabbataadhaan hin kuufamne."
+}
+};
+
+function changeLanguage(){
+const t=translations[document.getElementById("language").value];
+Object.keys(t).forEach(id=>{
+const el=document.getElementById(id);
+if(el)el.textContent=t[id];
+});
+}
+
+document.getElementById("profileForm").addEventListener("submit",function(e){
+e.preventDefault();
+const t=translations[document.getElementById("language").value];
+const result=document.getElementById("result");
+result.textContent=t.success;
+result.style.display="block";
+});
+</script>
+</body>
+</html>
